@@ -4,11 +4,13 @@
     wird bei PCs angewandt, die nicht in einer Domäne verwaltet werden
 
     author: flo.alt@fa-netz.de
-    version: 0.5
+    version: 0.6
 
 
     Vorlage für neuen Registry-Block:
 
+    $title = ""
+    $action = ""
     $key = "HKCU:\"
     $name = ""
     $type = "DWORD"
@@ -18,32 +20,60 @@
 #>
 
 
+
+# ---------------- Hier werden alle Funktionen definiert ---------------------
+
 # Funktion: Drucker löschen
 
     function delete-unwantedprinter {
         $queryprinter = Get-WMIObject -Class Win32_Printer | where {$_.name -eq $printer}
             if ($queryprinter) {
                Remove-Printer -Name $printer
-               echo "Lösche Drucker $printer" 
+               write-host "Lösche Drucker $printer" 
            
                $querydelete = Get-WMIObject -Class Win32_Printer | where {$_.name -eq $printer}
                if ($querydelete) {
-                    echo "FEHLER: Der Drucker $printer konnte nicht gelöscht werden"
+                    write-host "FEHLER: Der Drucker $printer konnte nicht gelöscht werden" -F Red
+                    $script:errorcount = $script:errorcount + 1
                } else {
-                    echo "OK: Der Drucker $printer wurde gelöscht"
+                    write-host "OK: Der Drucker $printer wurde gelöscht" -F Green
                }
         
             } else {
-                echo "INFO: Der Drucker $printer ist nicht vorhanden"
+                write-host "INFO: Der Drucker $printer ist nicht vorhanden" -F Yellow
         }
     }
 
 
+# Funktion: legt einen Registry Key fest
+
+    function set-registrykey {
+        if (!(Test-Path $key)) {
+            $yeah = "OK: Registry Key $key erfolgreich angelegt"
+            $shit = "FEHLER: Registry Key $key konnte nicht angelegt werden"
+            New-Item $key -Force | Out-Null
+            errorcheck}
+        }
+
 # Funktion: legt einen Registry Wert fest
 
-    function set-registry {
-        if (!(Test-Path $key)) {New-Item $key -Force | Out-Null}
+    function set-registryvalue {
+        set-registrykey
+        $yeah = "OK: $title wurde erfolgreich deaktiviert"
+        $shit = "Fehler: $title konnte nicht deaktiviert werden"
         Set-ItemProperty -Type $type -Path $key -Name $name -Value $value
+        errorcheck
+    }
+
+
+# Funktion: legt einen Registry Wert für AppPrivacy fest
+
+    function set-registryappp {
+        if (!(Test-Path $key)) {New-Item $key -Force | Out-Null}
+        $yeah = "OK: App Datenschutz: $name erfolgreich deaktiviert"
+        $shit = "FEHLER:  App Datenschutz: $name konnte nicht deaktiviert werden"
+        Set-ItemProperty -Type $type -Path $key -Name $name -Value $value
+        errorcheck
     }
 
 
@@ -54,6 +84,37 @@
         Split-Path -parent $PSCommandPath
     }
 
+
+# Funktion: Fehlercheck
+
+    function errorcheck {
+        if ($?) {
+            write-host $yeah -F Green
+        } else {
+            write-host $shit -F Red
+            $script:errorcount = $script:errorcount + 1
+        }
+    }
+
+# ------------------- ENDE Definition der Funktionen --------------------
+
+# ------------------- Hier beginnt der Befehlsablauf --------------------
+
+# Begrüßung
+
+Write-Host "
+    ;-) Install-Party ;-) `n
+    Konfiguration für neue PCs
+    " -F Yellow
+
+Write-Host "
+    >>>>> Party on, Wayne
+            >>>>> Party on, Garth `n
+    " -F Green
+
+Start-Sleep 1
+
+$script:errorcount = 0
 
 # Drucker löschen
 
@@ -67,8 +128,10 @@
 # Standard-Apps definieren
 
     $scriptpath = Get-ScriptDirectory
+    $yeah = "OK: Standard-Apps wurden für den nächsten neuen User festgelegt"
+    $shit = "FEHLER: Die Standard-Apps konnten nicht festgelegt werden."
     Dism /Online /Import-DefaultAppAssociations:$scriptpath\AppAssoc.xml | Out-Null
-    echo "OK: Standard-Apps wurden festgelegt"
+    errorcheck
 
 
 # (fast) alle Kacheln im Startmenü löschen
@@ -81,11 +144,13 @@
     $defaultpath = "C:\Users\Default User\Appdata\Local\Microsoft\Windows\Shell"
 
     if (!(Test-Path $defaultpath\DefaultLayouts-original.xml)) {
+        $yeah = "OK: Startmenü-Kacheln werden für den nächsten neuen User entfernt"
+        $shit = "FEHLER: Starmenü-Kacheln konnten nicht kongifuriert werden"
         ren $defaultpath\DefaultLayouts.xml $defaultpath\DefaultLayouts-original.xml
         copy $scriptpath\startmenu.xml $defaultpath\DefaultLayouts.xml
-        echo "OK: Startmenü-Kacheln werden für den nächsten neuen User entfernt"
+        errorcheck
     } else {
-        echo "INFO: Einstellungen für Startmenü-Kacheln wurden bereits gesetzt"
+        write-host "INFO: Einstellungen für Startmenü-Kacheln wurden bereits gesetzt" -F Yellow
     }
 
 
@@ -96,7 +161,7 @@
         $name = ""
         $type = "DWORD"
         $value = 2
-        set-registry
+        set-registryvalue
 
         #>
 
@@ -104,129 +169,141 @@
     # Registry-Key anlegen
     
     $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy"
-    if (!(Test-Path $key)) {New-Item $key | Out-Null}
-    
+    set-registrykey
+ 
     $type = "DWORD"
     $value = 2
 
     # Kontoinformationen
 
         $name = "LetAppsAccessAccountInfo"
-        set-registry
+        set-registryappp
 
     # Kalender
 
         $name = "LetAppsAccessCalendar"
-        set-registry
+        set-registryappp
 
     # Telefonanrufe
 
         $name = "LetAppsAccessCallHistory"
-        set-registry
+        set-registryappp
 
     # Kamera
 
         $name = "LetAppsAccessCamera"
-        set-registry
+        set-registryappp
 
     # Kontakte
 
         $name = "LetAppsAccessContacts"
-        set-registry
+        set-registryappp
 
     # Email
 
         $name = "LetAppsAccessEmail"
-        set-registry
+        set-registryappp
 
     # Position
 
         $name = "LetAppsAccessLocation"
-        set-registry
+        set-registryappp
 
     # Messaging
 
         $name = "LetAppsAccessMessaging"
-        set-registry
+        set-registryappp
 
     # Mikrofon
 
         $name = "LetAppsAccessMicrophone"
-        set-registry
+        set-registryappp
 
     # Motion
 
         $name = "LetAppsAccessMotion"
-        set-registry
+        set-registryappp
 
     # Benachrichtigungen
 
         $name = "LetAppsAccessNotifications"
-        set-registry
+        set-registryappp
 
     # Telefonie
 
         $name = "LetAppsAccessPhone"
-        set-registry
+        set-registryappp
 
     # Funktechnik
 
         $name = "LetAppsAccessRadios"
-        set-registry
+        set-registryappp
 
     # App Syncronisierung
 
         $name = "LetAppsSyncWithDevices"
-        set-registry
+        set-registryappp
 
     # Aufgaben
 
         $name = "LetAppsAccessTasks"
-        set-registry
+        set-registryappp
 
     # weitere Geräte
 
         $name = "LetAppsAccessTrustedDevices"
-        set-registry
+        set-registryappp
 
     # Hintergrund-Apps
 
         $name = "LetAppsRunInBackground"
-        set-registry
+        set-registryappp
 
     # Diagnose-Informationen
 
         $name = "LetAppsGetDiagnosticInfo"
-        set-registry
+        set-registryappp
 
-    echo "OK: App-Datenschutzeinstellungen wurden konfiguriert"
 
 
 # AppV deaktivieren
 
+    $title = "AppV Client"
     $key = "HKLM:\Software\Policies\Microsoft\AppV\Client"
     $name = "Enabled"
     $type = "DWORD"
     $value = 0
-    set-registry
-    echo "OK: AppV Client wurde deaktiviert"
+    set-registryvalue
 
 # Telemetrie deaktivieren
 
+    $title = "Telemetrie"
     $key = "HKLM:\SOFTWARE\Microsoft\DataCollection"
     $name = "AllowTelemetry"
     $type = "DWORD"
     $value = 0
-    set-registry
-    echo "OK: Telemetrie wurde deaktiviert"
+    set-registryvalue
 
 # Postionen und Sensoren: Sensoren deaktivieren
 
+    $title = "Positions-Sensor"
     $key = "HKLM:\Software\Policies\Microsoft\Windows\LocationAndSensors"
     $name = "DisableSensors"
     $type = "DWORD"
     $value = 1
-    set-registry
-    echo "OK: Positions-Sensor wurde deaktiviert"
+    set-registryvalue
 
-echo `n "Jippie ya yeah Schweinebacke!" `n
+
+# Script-Ende
+
+if ($errorcount -lt 1) {
+    write-host "
+        Alles erfolgreich abgeschlossen.
+          > > Yippie ya yeah Schweinebacke!
+        " -F Green
+} else {
+    write-host "
+        Es sind $script:errorcount Fehler aufgetreten...
+        ...but it's better to burn out then to fade away
+        " -F Red
+}

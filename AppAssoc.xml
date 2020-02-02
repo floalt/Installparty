@@ -127,5 +127,4 @@
   <Association Identifier="http" ProgId="FirefoxURL-308046B0AF4A39CB" ApplicationName="Firefox" />
   <Association Identifier="https" ProgId="FirefoxURL-308046B0AF4A39CB" ApplicationName="Firefox" />
   <Association Identifier="mailto" ProgId="Thunderbird.Url.mailto" ApplicationName="Thunderbird" />
-
 </DefaultAssociations>
