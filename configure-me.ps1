@@ -2,9 +2,10 @@
 
     Konfigurations-Script für ein neues Benutzerprofil
     wird bei PCs angewandt, die nicht in einer Domäne verwaltet werden
+    Aufruf durch start-party4me.cmd
 
     author: flo.alt@fa-netz.de
-    version: 0.6
+    version: 0.61
 
 
     Vorlage für neuen Registry-Block:
@@ -15,7 +16,7 @@
     $name = ""
     $type = "DWORD"
     $value = 0
-    set-registry
+    set-registryvalue
 
 #>
 
@@ -49,6 +50,18 @@
         $shit = "Fehler: $title konnte nicht $action werden"
         Set-ItemProperty -Type $type -Path $key -Name $name -Value $value
         errorcheck
+    }
+
+
+# FUnktion: löscht einen Registry Wert
+
+    function del-registryvalue {
+        $yeah = "OK: $title wurde erfolgreich gelöscht"
+        $shit = "Fehler: $title konnte nicht gelöscht werden"
+        if (Test-Path $key\$name) {
+            Remove-ItemProperty -Path $key -Name $name
+            errorcheck
+        }
     }
 
 
@@ -96,14 +109,6 @@ Start-Sleep 1
 $script:errorcount = 0
 
 
-# Onedrive deinstallieren
-
-    & $env:SystemRoot\SysWOW64\OneDriveSetup.exe /uninstall
-    Write-Host "INFO: OneDrive Deinstallation wurde gestartet
-        Admin-Rechte bitte im nachfolgendem Fenster bestätigen
-        " -F Yellow
-
-
 # Cortana / Bing Search deaktivieren
     
     $title = "Bing Search"
@@ -131,6 +136,79 @@ $script:errorcount = 0
     $type = "DWORD"
     $value = 0
     set-registryvalue
+
+
+# Anpassungen des Datenschutz
+
+    $title = "Starten von Apps nachverfolgen"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $name = "Start_TrackProgs"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+
+    $title = "Zugriff auf Sprachenliste für Websites"
+    $key = "HKCU:\Software\Microsoft\Internet Explorer\International"
+    $name = "AcceptLanguage"
+    del-registryvalue
+
+    $title = "Freihand- und Eingabeanpassung (1)"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore"
+    $name = "HarvestContacts"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+    
+    $title = "Freihand- und Eingabeanpassung (2)"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\Personalization\Settings"
+    $name = "AcceptedPrivacyPolicy"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+
+    $title = "Feedbackhäufigkeit"
+    $action = "genullt"
+    $key = "HKCU:\Software\Microsoft\Siuf\Rules"
+    $name = "NumberOfSIUFInPeriod"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+
+    $title = "Zugriff auf Dokumenten-Bibliothek"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\documentsLibrary"
+    $name = "Value"
+    $type = "String"
+    $value = "Deny"
+    set-registryvalue
+    
+    $title = "Zugriff auf Bild-Bibliothek"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\picturesLibrary"
+    $name = "Value"
+    $type = "String"
+    $value = "Deny"
+    set-registryvalue
+
+    $title = "Zugriff auf Video-Bibliothek"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\videosLibrary"
+    $name = "Value"
+    $type = "String"
+    $value = "Deny"
+    set-registryvalue
+
+    $title = "Zugriff auf Dateisystem"
+    $action = "deaktiviert"
+    $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\broadFileSystemAccess"
+    $name = "Value"
+    $type = "String"
+    $value = "Deny"
+    set-registryvalue
+
 
 # Blendet den Arbeitsplatz auf dem Desktop ein:
 
@@ -162,6 +240,11 @@ $script:errorcount = 0
     Remove-Item C:\tempdir7z -Recurse -Force
 
 
+# Onedrive deinstallieren
+
+    & $env:SystemRoot\SysWOW64\OneDriveSetup.exe /uninstall
+    Write-Host "INFO: OneDrive Deinstallation wurde gestartet" -F Yellow
+
 # Script Ende
 
 if ($errorcount -lt 1) {
@@ -175,3 +258,6 @@ if ($errorcount -lt 1) {
         ...but it's better to burn out then to fade away
         " -F Red
 }
+
+write-host "Bitte klicke im Fenster OneDriveSetup auf >> Ja <<" -F Yellow
+write-host "Füge das angezeigte Addon in Firefox hinzu.`n" -F Yellow

@@ -2,9 +2,10 @@
 
     Konfigurations-Script für eine neu Windows-Installation
     wird bei PCs angewandt, die nicht in einer Domäne verwaltet werden
+    Aufruf durch start-party4pc.cmd
 
     author: flo.alt@fa-netz.de
-    version: 0.6
+    version: 0.61
 
 
     Vorlage für neuen Registry-Block:
@@ -85,6 +86,60 @@
     }
 
 
+# Funktion: Desktop-Verknüpfung löschen
+    
+    function del-desktoplink {
+        $yeah ="OK: $unwantedlink wurde vom Desktop gelöscht"
+        $shit ="FEHLER: $title konnte nicht vom Desktop gelöscht werden"
+        if (Test-Path $env:PUBLIC\Desktop\$unwantedlink.lnk) {
+            del $env:PUBLIC\Desktop\$unwantedlink.lnk
+            errorcheck
+        }
+    }
+
+
+# Funktion: Desktop-Verknüpfungen erstellen
+
+    function new-desktoplink {
+        $menu = "$env:ProgramData\Microsoft\Windows\Start Menu\Programs"
+        $linkpath = "$menu\$menudir\$linkfile.lnk"
+        if (Test-Path $linkpath) {
+            $yeah = "OK: Verknüpfung $linkfile wurde erstellt"
+            $shit = "FEHLER: Verknüpfung $linkfile konnte nicht erstellt werden"
+            cp $linkpath $env:PUBLIC\Desktop
+            errorcheck
+        }
+    }
+
+
+# Funktion: Dienst deaktivieren
+
+    function deactivate-service {
+        # Dienst beenden
+            $yeah = "OK: Dienst $title wurde erfolgreich beendet"
+            $shit = "FEHLER: Dienst $title konnte nicht beednet werden"
+            Stop-Service -Name $servicename
+            errorcheck
+        # Dienst deaktivieren
+            $yeah = "OK: Dienst $title wurde erfolgreich dauerhaft deaktiviert"
+            $shit = "FEHLER: Dienst $title konnte nicht deaktiviert werden"
+            Set-Service -Name $servicename -StartupType Disabled
+            errorcheck
+    }
+
+
+# Funktion: Neuen Hostname abfragen
+
+function read-hostname {
+    $script:newhostname = Read-Host "neuer Hostname"
+    # prüfe, ob Eingabe leer ist
+    if ($newhostname) {
+        $script:doit = 1
+    } else {
+        $script:doit = 0
+    }
+}
+
 # Funktion: Fehlercheck
 
     function errorcheck {
@@ -99,6 +154,8 @@
 # ------------------- ENDE Definition der Funktionen --------------------
 
 # ------------------- Hier beginnt der Befehlsablauf --------------------
+
+$scriptpath = Get-ScriptDirectory
 
 # Begrüßung
 
@@ -127,7 +184,6 @@ $script:errorcount = 0
 
 # Standard-Apps definieren
 
-    $scriptpath = Get-ScriptDirectory
     $yeah = "OK: Standard-Apps wurden für den nächsten neuen User festgelegt"
     $shit = "FEHLER: Die Standard-Apps konnten nicht festgelegt werden."
     Dism /Online /Import-DefaultAppAssociations:$scriptpath\AppAssoc.xml | Out-Null
@@ -277,9 +333,32 @@ $script:errorcount = 0
 
 # Telemetrie deaktivieren
 
-    $title = "Telemetrie"
+    $title = "Telemetrie (1)"
     $key = "HKLM:\SOFTWARE\Microsoft\DataCollection"
     $name = "AllowTelemetry"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+
+    $title = "Telemetrie (2)"
+    $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
+    $name = "AllowTelemetry"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+
+# Diagnosedaten komplett deaktivieren
+
+    $title = "Diagnosedaten komplett (1)"
+    $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection"
+    $name = "AllowTelemetry"
+    $type = "DWORD"
+    $value = 0
+    set-registryvalue
+
+    $title = "Diagnosedaten komplett (2)"
+    $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection"
+    $name = "MaxTelemetryAllowed"
     $type = "DWORD"
     $value = 0
     set-registryvalue
@@ -294,16 +373,66 @@ $script:errorcount = 0
     set-registryvalue
 
 
+# Dienste deaktivieren
+
+    $title = "Benutzererfahrung und Telemetrie"
+    $servicename = "DiagTrack"
+    deactivate-service
+
+
+# PC-Namen ändern
+
+    $hostname = $env:COMPUTERNAME
+
+    Write-Host "
+        aktueller Hostname: $hostname
+        Jetzt kann der Hostname des PCs geändert werden.
+        Bitte gib einen neuen Hostnamen ein
+        oder drücke Enter, um den aktuellen Namen zu behalten" -F Yellow
+    
+    read-hostname
+
+    if ($doit -eq 1) {
+        $yeah = "OK: Der Hostname wird beim nächsten Neustart geändert"
+        $shit = "FEHLER: Der Hostname konnte nicht geändert werden"
+        Rename-Computer -NewName $newhostname
+        errorcheck
+        echo $newhostname > $scriptpath\hostname.tmp
+    
+    } else {
+        Write-Host "OK: Der Hostname bleibt unverändert." -F Yellow
+        echo $hostname > $scriptpath\hostname.tmp
+    }
+
+# Desktop-Verknüpfungen löschen
+
+    $unwantedlink = "Acrobat Reader DC"
+    del-desktoplink
+
+    $unwantedlink = "VLC media player*"
+    del-desktoplink
+
+# Desktop-Verknüpfungen erstellen
+
+    $menudir = "LibreOffice 6.3"
+    $linkfile = "LibreOffice Writer"
+    new-desktoplink
+
+    $menudir = "LibreOffice 6.3"
+    $linkfile = "LibreOffice Calc"
+    new-desktoplink
+
+
 # Script-Ende
 
-if ($errorcount -lt 1) {
-    write-host "
-        Alles erfolgreich abgeschlossen.
-          > > Yippie ya yeah Schweinebacke!
-        " -F Green
-} else {
-    write-host "
-        Es sind $script:errorcount Fehler aufgetreten...
-        ...but it's better to burn out then to fade away
-        " -F Red
-}
+    if ($errorcount -lt 1) {
+        write-host "
+            Alles erfolgreich abgeschlossen.
+              > > Yippie ya yeah Schweinebacke!
+            " -F Green
+    } else {
+        write-host "
+            Es sind $script:errorcount Fehler aufgetreten...
+            ...but it's better to burn out then to fade away
+            " -F Red
+    }
