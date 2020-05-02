@@ -5,6 +5,7 @@
     Aufruf durch start-party4me.cmd
 
     author: flo.alt@fa-netz.de
+    https://github.com/floalt/installparty/blob/master/executionpolicy.cmd
     version: 0.61
 
 

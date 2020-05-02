@@ -1,4 +1,5 @@
 :: Script für Set-ExecutionPolicy als User
+:: das funktioniert nicht und wird momentan nicht verwendet
 :: ver 0.6
 
 @echo off

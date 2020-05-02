@@ -5,7 +5,8 @@
     Aufruf durch start-party4pc.cmd
 
     author: flo.alt@fa-netz.de
-    version: 0.61
+    https://github.com/floalt/installparty/blob/master/executionpolicy.cmd
+    version: 0.62
 
 
     Vorlage für neuen Registry-Block:
@@ -186,7 +187,7 @@ $script:errorcount = 0
 
     $yeah = "OK: Standard-Apps wurden für den nächsten neuen User festgelegt"
     $shit = "FEHLER: Die Standard-Apps konnten nicht festgelegt werden."
-    Dism /Online /Import-DefaultAppAssociations:$scriptpath\AppAssoc.xml | Out-Null
+    Dism /Online /Import-DefaultAppAssociations:$scriptpath\files\AppAssoc.xml | Out-Null
     errorcheck
 
 
@@ -203,7 +204,7 @@ $script:errorcount = 0
         $yeah = "OK: Startmenü-Kacheln werden für den nächsten neuen User entfernt"
         $shit = "FEHLER: Starmenü-Kacheln konnten nicht kongifuriert werden"
         ren $defaultpath\DefaultLayouts.xml $defaultpath\DefaultLayouts-original.xml
-        copy $scriptpath\startmenu.xml $defaultpath\DefaultLayouts.xml
+        copy $scriptpath\files\startmenu.xml $defaultpath\DefaultLayouts.xml
         errorcheck
     } else {
         write-host "INFO: Einstellungen für Startmenü-Kacheln wurden bereits gesetzt" -F Yellow
@@ -245,11 +246,6 @@ $script:errorcount = 0
         $name = "LetAppsAccessCallHistory"
         set-registryappp
 
-    # Kamera
-
-        $name = "LetAppsAccessCamera"
-        set-registryappp
-
     # Kontakte
 
         $name = "LetAppsAccessContacts"
@@ -268,11 +264,6 @@ $script:errorcount = 0
     # Messaging
 
         $name = "LetAppsAccessMessaging"
-        set-registryappp
-
-    # Mikrofon
-
-        $name = "LetAppsAccessMicrophone"
         set-registryappp
 
     # Motion

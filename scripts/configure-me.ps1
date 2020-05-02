@@ -5,7 +5,8 @@
     Aufruf durch start-party4me.cmd
 
     author: flo.alt@fa-netz.de
-    version: 0.61
+    https://github.com/floalt/installparty
+    version: 0.62
 
 
     Vorlage für neuen Registry-Block:
@@ -220,15 +221,17 @@ $script:errorcount = 0
     $value = 0
     set-registryvalue
 
+
 # Desktop-Verknüpfungen löschen
 
     $unwantedlink = "Microsoft Edge"
     del-desktoplink
 
+
 # Appdata Defaults
 
     $7zpath = "C:\Program Files\7-Zip"
-    $7zfile = "appdata.7z"
+    $7zfile = "files\appdata.7z"
     $appdtadir = $env:APPDATA
     $yeah = "OK: Appdata Default wurden erfolgreich erstellt"
     $shit = "FEHLER: Appdata Defaults konnten nicht erstell werden"
@@ -240,7 +243,7 @@ $script:errorcount = 0
     Remove-Item C:\tempdir7z -Recurse -Force
 
 
-# Onedrive deinstallieren
+# Onedrive deinstallieren (funktioniert aber irgendwie nicht?)
 
     & $env:SystemRoot\SysWOW64\OneDriveSetup.exe /uninstall
     Write-Host "INFO: OneDrive Deinstallation wurde gestartet" -F Yellow

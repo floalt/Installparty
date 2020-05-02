@@ -1,5 +1,7 @@
-:: Start-Script für configure-pc.ps1
-:: ver 0.61
+:: Start-Script für PC-Setup und Benutzer hinzufügen
+:: author: flo.alt@fa-netz.de
+:: https://github.com/floalt/installparty
+:: ver 0.62
 
 @echo off
 
@@ -12,7 +14,7 @@ set /p policy=<%scriptpath%policy.tmp
 del %scriptpath%policy.tmp
 
 IF "%policy%" EQU "Unrestricted" (
-	echo "OK: ExecutionPolicy ist bereits %policy%"
+	echo "OK: ExecutionPolicy ist %policy%"
 
 ) ELSE (
 	echo "INFO: ExecutionPolicy muss auf Unrestricted geaendert werden..."
@@ -39,8 +41,8 @@ IF "%policy2%" EQU "Unrestricted" (
 
 :: Start Script
 
-powershell "%scriptpath%configure-pc.ps1"
-powershell "%scriptpath%adduser.ps1"
+powershell "%scriptpath%scripts\configure-pc.ps1"
+powershell "%scriptpath%scripts\adduser.ps1"
 
 :: Ende
 

@@ -5,7 +5,8 @@
     Aufruf durch start-party4pc.cmd
 
     author: flo.alt@fa-netz.de
-    version: 0.61
+    https://github.com/floalt/installparty
+    version: 0.62
 
 
 #>

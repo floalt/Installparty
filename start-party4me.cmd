@@ -1,5 +1,7 @@
-:: Start-Script für configure-me.ps1
-:: ver 0.61
+:: Start-Script für die Konfiguration des Benutzerprofils
+:: author: flo.alt@fa-netz.de
+:: https://github.com/floalt/installparty
+:: ver 0.62
 
 @echo off
 
@@ -12,7 +14,7 @@ set /p policy=<%scriptpath%policy.tmp
 del %scriptpath%policy.tmp
 
 IF "%policy%" EQU "Unrestricted" (
-	echo "OK: ExecutionPolicy ist bereits %policy%"
+	echo "OK: ExecutionPolicy ist %policy%"
 
 ) ELSE (
 	echo.
@@ -26,7 +28,7 @@ IF "%policy%" EQU "Unrestricted" (
 
 :: Start Scripts
 
-powershell "%scriptpath%configure-me.ps1"
-powershell "%scriptpath%firefoxaddon.ps1"
+powershell "%scriptpath%scripts\configure-me.ps1"
+powershell "%scriptpath%scripts\firefoxaddon.ps1"
 
 pause
