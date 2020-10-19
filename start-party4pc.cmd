@@ -42,15 +42,6 @@ IF "%policy2%" EQU "Unrestricted" (
 :: Start Script
 
 powershell "%scriptpath%scripts\configure-pc.ps1"
-powershell "%scriptpath%scripts\adduser.ps1"
 
 :: Ende
-
-echo.
-echo Alles fertig.
-echo Lade die Benutzerliste in die Nextcloud hoch und drucke das Info-Blatt aus.
-echo Du kanst dich anschließend abmelden und als Nicht-Admin Benutzer wieder anmelden.
-echo.
-echo.
-
 pause

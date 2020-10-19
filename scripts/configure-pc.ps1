@@ -1,23 +1,11 @@
 ﻿<#
 
     Konfigurations-Script für eine neu Windows-Installation
-    wird bei PCs angewandt, die nicht in einer Domäne verwaltet werden
     Aufruf durch start-party4pc.cmd
 
     author: flo.alt@fa-netz.de
     https://github.com/floalt/installparty/blob/master/executionpolicy.cmd
-    version: 0.62
-
-
-    Vorlage für neuen Registry-Block:
-
-    $title = ""
-    $action = ""
-    $key = "HKCU:\"
-    $name = ""
-    $type = "DWORD"
-    $value = 0
-    set-registry
+    version: 0.7
 
 #>
 
@@ -25,14 +13,59 @@
 
 # ---------------- Hier werden alle Funktionen definiert ---------------------
 
+
+# Funktion: Fehlercheck
+
+    function errorcheck {
+        if ($?) {
+            write-host $yeah -F Green
+        } else {
+            write-host $shit -F Red
+            $global:errorcount = $global:errorcount + 1
+        }
+    }
+
+
+# Funktion: Script-Verzeichnis auslesen
+
+    function Get-ScriptDirectory {
+        Split-Path -parent $PSCommandPath
+    }
+
+# Funktion: Drücke ein Taste zum Schließen
+
+    function shutup {
+
+        Read-Host "
+        ENDE: Drücke die Entertaste, um das Fenster zu schließen."
+        exit
+    }
+
+# Funktion: Ja / Nein Frage
+
+    function ask-yesno ([string]$question) {
+        $letsdoit = Read-Host $question [J/n]
+        if (($letsdoit -eq "j") -or (!$letsdoit)) {
+            $script:doit = 1
+            $script:question = $null
+        } elseif ($letsdoit -eq "n") {
+            $script:doit = 0
+            $script:question = $null
+        } else {
+            Write-Host "Bitte 'j' oder 'n' eingeben (Enter für Ja)" -F Red
+            ask-yesno
+        }
+    }
+
+
 # Funktion: Drucker löschen
 
     function delete-unwantedprinter {
         $queryprinter = Get-WMIObject -Class Win32_Printer | where {$_.name -eq $printer}
             if ($queryprinter) {
                Remove-Printer -Name $printer
-               write-host "Lösche Drucker $printer" 
-           
+               write-host "Lösche Drucker $printer"
+
                $querydelete = Get-WMIObject -Class Win32_Printer | where {$_.name -eq $printer}
                if ($querydelete) {
                     write-host "FEHLER: Der Drucker $printer konnte nicht gelöscht werden" -F Red
@@ -40,7 +73,7 @@
                } else {
                     write-host "OK: Der Drucker $printer wurde gelöscht" -F Green
                }
-        
+
             } else {
                 write-host "INFO: Der Drucker $printer ist nicht vorhanden" -F Yellow
         }
@@ -57,6 +90,7 @@
             errorcheck}
         }
 
+
 # Funktion: legt einen Registry Wert fest
 
     function set-registryvalue {
@@ -65,51 +99,6 @@
         $shit = "Fehler: $title konnte nicht deaktiviert werden"
         Set-ItemProperty -Type $type -Path $key -Name $name -Value $value
         errorcheck
-    }
-
-
-# Funktion: legt einen Registry Wert für AppPrivacy fest
-
-    function set-registryappp {
-        if (!(Test-Path $key)) {New-Item $key -Force | Out-Null}
-        $yeah = "OK: App Datenschutz: $name erfolgreich deaktiviert"
-        $shit = "FEHLER:  App Datenschutz: $name konnte nicht deaktiviert werden"
-        Set-ItemProperty -Type $type -Path $key -Name $name -Value $value
-        errorcheck
-    }
-
-
-
-# Funktion: Script-Verzeichnis auslesen
-
-    function Get-ScriptDirectory {
-        Split-Path -parent $PSCommandPath
-    }
-
-
-# Funktion: Desktop-Verknüpfung löschen
-    
-    function del-desktoplink {
-        $yeah ="OK: $unwantedlink wurde vom Desktop gelöscht"
-        $shit ="FEHLER: $title konnte nicht vom Desktop gelöscht werden"
-        if (Test-Path $env:PUBLIC\Desktop\$unwantedlink.lnk) {
-            del $env:PUBLIC\Desktop\$unwantedlink.lnk
-            errorcheck
-        }
-    }
-
-
-# Funktion: Desktop-Verknüpfungen erstellen
-
-    function new-desktoplink {
-        $menu = "$env:ProgramData\Microsoft\Windows\Start Menu\Programs"
-        $linkpath = "$menu\$menudir\$linkfile.lnk"
-        if (Test-Path $linkpath) {
-            $yeah = "OK: Verknüpfung $linkfile wurde erstellt"
-            $shit = "FEHLER: Verknüpfung $linkfile konnte nicht erstellt werden"
-            cp $linkpath $env:PUBLIC\Desktop
-            errorcheck
-        }
     }
 
 
@@ -129,301 +118,119 @@
     }
 
 
-# Funktion: Neuen Hostname abfragen
+# Funktion: Was soll das werden?
 
-function read-hostname {
-    $script:newhostname = Read-Host "neuer Hostname"
-    # prüfe, ob Eingabe leer ist
-    if ($newhostname) {
-        $script:doit = 1
-    } else {
-        $script:doit = 0
-    }
-}
-
-# Funktion: Fehlercheck
-
-    function errorcheck {
-        if ($?) {
-            write-host $yeah -F Green
-        } else {
-            write-host $shit -F Red
-            $script:errorcount = $script:errorcount + 1
+    function read-kindof {
+        $global:kindof = Read-Host "Bitte wähle"
+        switch -Wildcard($global:kindof) {
+            1 {Write-Host "OK: Ascair" -F Green
+               $global:kindof = "ascair"; break}
+            2 {Write-Host "OK: Biomichl" -F Green
+               $global:kindof = "biomichl"; break}
+            3 {Write-Host "OK: Isarland" -F Green
+               $global:kindof = "isarland"; break}
+            4 {Write-Host "OK: Raab" -F Green
+               $global:kindof = "raab"; break}
+            9 {Write-Host "OK: Privat-PC" -F Green
+               $global:kindof = "privat"; break}
+            q {Write-Host "Alles klar! Bis zum nächsten Mal..." -F Yellow
+               shutup; break}
+            * {Write-Host "Bitte tippe ein: 1, 2, 3, 4 oder Q" -F Red
+              read-kindof; break}
         }
     }
+
+
 
 # ------------------- ENDE Definition der Funktionen --------------------
 
 # ------------------- Hier beginnt der Befehlsablauf --------------------
 
-$scriptpath = Get-ScriptDirectory
+$global:scriptpath = Get-ScriptDirectory
+$global:errorcount = 0
+$global:steps = 0
 
 # Begrüßung
 
-Write-Host "
-    ;-) Install-Party ;-) `n
-    Konfiguration für neue PCs
-    " -F Yellow
-
-Write-Host "
-    >>>>> Party on, Wayne
-            >>>>> Party on, Garth `n
-    " -F Green
-
-Start-Sleep 1
-
-$script:errorcount = 0
-
-# Drucker löschen
-
-    $printer = "Microsoft XPS Document Writer"
-    delete-unwantedprinter $printer
-
-    $printer = "Fax"
-    delete-unwantedprinter $printer
-
-
-# Standard-Apps definieren
-
-    $yeah = "OK: Standard-Apps wurden für den nächsten neuen User festgelegt"
-    $shit = "FEHLER: Die Standard-Apps konnten nicht festgelegt werden."
-    Dism /Online /Import-DefaultAppAssociations:$scriptpath\files\AppAssoc.xml | Out-Null
-    errorcheck
-
-
-# (fast) alle Kacheln im Startmenü löschen
-
-    <#
-    Hier wird eine Datei im Default User Profile geändert.
-    Wirkt sich also somit auf alle neu angelegten User aus
-    #>
-
-    $defaultpath = "C:\Users\Default User\Appdata\Local\Microsoft\Windows\Shell"
-
-    if (!(Test-Path $defaultpath\DefaultLayouts-original.xml)) {
-        $yeah = "OK: Startmenü-Kacheln werden für den nächsten neuen User entfernt"
-        $shit = "FEHLER: Starmenü-Kacheln konnten nicht kongifuriert werden"
-        ren $defaultpath\DefaultLayouts.xml $defaultpath\DefaultLayouts-original.xml
-        copy $scriptpath\files\startmenu.xml $defaultpath\DefaultLayouts.xml
-        errorcheck
-    } else {
-        write-host "INFO: Einstellungen für Startmenü-Kacheln wurden bereits gesetzt" -F Yellow
-    }
-
-
-# App Datenschutz
-
-        <# Vorlage für Registry-Set
-        
-        $name = ""
-        $type = "DWORD"
-        $value = 2
-        set-registryvalue
-
-        #>
-
-
-    # Registry-Key anlegen
-    
-    $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy"
-    set-registrykey
- 
-    $type = "DWORD"
-    $value = 2
-
-    # Kontoinformationen
-
-        $name = "LetAppsAccessAccountInfo"
-        set-registryappp
-
-    # Kalender
-
-        $name = "LetAppsAccessCalendar"
-        set-registryappp
-
-    # Telefonanrufe
-
-        $name = "LetAppsAccessCallHistory"
-        set-registryappp
-
-    # Kontakte
-
-        $name = "LetAppsAccessContacts"
-        set-registryappp
-
-    # Email
-
-        $name = "LetAppsAccessEmail"
-        set-registryappp
-
-    # Position
-
-        $name = "LetAppsAccessLocation"
-        set-registryappp
-
-    # Messaging
-
-        $name = "LetAppsAccessMessaging"
-        set-registryappp
-
-    # Motion
-
-        $name = "LetAppsAccessMotion"
-        set-registryappp
-
-    # Benachrichtigungen
-
-        $name = "LetAppsAccessNotifications"
-        set-registryappp
-
-    # Telefonie
-
-        $name = "LetAppsAccessPhone"
-        set-registryappp
-
-    # Funktechnik
-
-        $name = "LetAppsAccessRadios"
-        set-registryappp
-
-    # App Syncronisierung
-
-        $name = "LetAppsSyncWithDevices"
-        set-registryappp
-
-    # Aufgaben
-
-        $name = "LetAppsAccessTasks"
-        set-registryappp
-
-    # weitere Geräte
-
-        $name = "LetAppsAccessTrustedDevices"
-        set-registryappp
-
-    # Hintergrund-Apps
-
-        $name = "LetAppsRunInBackground"
-        set-registryappp
-
-    # Diagnose-Informationen
-
-        $name = "LetAppsGetDiagnosticInfo"
-        set-registryappp
-
-
-
-# AppV deaktivieren
-
-    $title = "AppV Client"
-    $key = "HKLM:\Software\Policies\Microsoft\AppV\Client"
-    $name = "Enabled"
-    $type = "DWORD"
-    $value = 0
-    set-registryvalue
-
-# Telemetrie deaktivieren
-
-    $title = "Telemetrie (1)"
-    $key = "HKLM:\SOFTWARE\Microsoft\DataCollection"
-    $name = "AllowTelemetry"
-    $type = "DWORD"
-    $value = 0
-    set-registryvalue
-
-    $title = "Telemetrie (2)"
-    $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
-    $name = "AllowTelemetry"
-    $type = "DWORD"
-    $value = 0
-    set-registryvalue
-
-# Diagnosedaten komplett deaktivieren
-
-    $title = "Diagnosedaten komplett (1)"
-    $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection"
-    $name = "AllowTelemetry"
-    $type = "DWORD"
-    $value = 0
-    set-registryvalue
-
-    $title = "Diagnosedaten komplett (2)"
-    $key = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection"
-    $name = "MaxTelemetryAllowed"
-    $type = "DWORD"
-    $value = 0
-    set-registryvalue
-
-# Postionen und Sensoren: Sensoren deaktivieren
-
-    $title = "Positions-Sensor"
-    $key = "HKLM:\Software\Policies\Microsoft\Windows\LocationAndSensors"
-    $name = "DisableSensors"
-    $type = "DWORD"
-    $value = 1
-    set-registryvalue
-
-
-# Dienste deaktivieren
-
-    $title = "Benutzererfahrung und Telemetrie"
-    $servicename = "DiagTrack"
-    deactivate-service
-
-
-# PC-Namen ändern
-
-    $hostname = $env:COMPUTERNAME
+    Write-Host "
+        ;-) Install-Party ;-) `n
+        Konfiguration für neue PCs
+        " -F Yellow
 
     Write-Host "
-        aktueller Hostname: $hostname
-        Jetzt kann der Hostname des PCs geändert werden.
-        Bitte gib einen neuen Hostnamen ein
-        oder drücke Enter, um den aktuellen Namen zu behalten" -F Yellow
-    
-    read-hostname
+        >>>>> Party on, Wayne
+                >>>>> Party on, Garth `n
+        " -F Green
 
-    if ($doit -eq 1) {
-        $yeah = "OK: Der Hostname wird beim nächsten Neustart geändert"
-        $shit = "FEHLER: Der Hostname konnte nicht geändert werden"
-        Rename-Computer -NewName $newhostname
-        errorcheck
-        echo $newhostname > $scriptpath\hostname.tmp
-    
-    } else {
-        Write-Host "OK: Der Hostname bleibt unverändert." -F Yellow
-        echo $hostname > $scriptpath\hostname.tmp
+    Start-Sleep 1
+
+
+# Frage nach der Art der Installation
+
+    Write-Host "
+        Was soll denn das hier bitte werden?
+
+            1     Ascair
+            2     Biomichl
+            3     Isarland
+            4     Raab
+
+            9     Privat-PC
+
+            Q     ähh, ich bin hier falsch...
+    "
+
+    read-kindof
+
+
+# Frage, ob Software installiert werden soll
+
+$question = "Soll ich Software installieren? (Standard-Apps und individuelle Apps für die jeweiligen Unternehmen)"
+ask-yesno $question
+$install_apps = $doit
+
+
+
+
+# SCHRITT 1: Installationen durchführen
+
+    if ($install_apps -eq 1) {
+        & $Global:scriptpath/install-apps.ps1
     }
 
-# Desktop-Verknüpfungen löschen
 
-    $unwantedlink = "Acrobat Reader DC"
-    del-desktoplink
+# SCHRITT 2 & 3: Konfigurationen durchführen
 
-    $unwantedlink = "VLC media player*"
-    del-desktoplink
+    # 1) Konfigurationen für alle PCs
+    & $Global:scriptpath/pc-allkind.ps1
 
-# Desktop-Verknüpfungen erstellen
+    # 2) Konfiguration individuell nach Firma / Privat
+    switch -Wildcard($global:kindof) {
+        ascair {& $Global:scriptpath/pc-ascair.ps1; break}
+        biomichl {& $Global:scriptpath/pc-biomichl.ps1; break}
+        isarland {& $Global:scriptpath/pc-isarland.ps1; break}
+        raab {& $Global:scriptpath/pc-raab.ps1; break}
+        privat {& $Global:scriptpath/pc-private.ps1; break}
+    }
 
-    $menudir = "LibreOffice 6.3"
-    $linkfile = "LibreOffice Writer"
-    new-desktoplink
 
-    $menudir = "LibreOffice 6.3"
-    $linkfile = "LibreOffice Calc"
-    new-desktoplink
+# SCHRITT 4: Konfiguration Benutzer & Kennwörter
+
+    & $Global:scriptpath/adduser.ps1
 
 
 # Script-Ende
 
-    if ($errorcount -lt 1) {
+    if ($global:errorcount -lt 1) {
         write-host "
             Alles erfolgreich abgeschlossen.
-              > > Yippie ya yeah Schweinebacke!
+              Schön, wenn auch mal was funktioniert!
             " -F Green
     } else {
         write-host "
-            Es sind $script:errorcount Fehler aufgetreten...
+            Es sind $global:errorcount Fehler aufgetreten...
             ...but it's better to burn out then to fade away
             " -F Red
     }
+
+$global:steps

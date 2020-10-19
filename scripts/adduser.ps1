@@ -1,15 +1,18 @@
 <#
 
-    Konfigurations-Script zur Anlage von neuen Benutzern
+    Lokale Benutzerkonten anlegen
     wird bei PCs angewandt, die nicht in einer Domäne verwaltet werden
     Aufruf durch start-party4pc.cmd
-
-    author: flo.alt@fa-netz.de
-    https://github.com/floalt/installparty
-    version: 0.62
+    version: 0.7
 
 
 #>
+
+
+Write-Host "INFO: Beginne mit Konfiguration von Benutzern & Kennwörter" -F Yellow
+$global:steps = $global:steps + 1
+if ($pwdfile) {Remove-Variable pwdfile}
+
 
 # ---------------- Start: Funktionen definieren ---------------------
 
@@ -42,12 +45,12 @@ function read-fullname {
 
 function read-username {
     $script:username = Read-Host "Benutzername"
-    
+
     # prüfe, ob Benutzername leer ist
     if (!$username) {
         Write-Host "Bitte gib einen Benutzernamen ein!" -ForegroundColor Red
         read-username
-    
+
     # prüfe, ob Benutzer schon existiert
     } else {
         $userexist = Get-LocalUser | where {$_.Name -eq $username}
@@ -65,10 +68,10 @@ function read-username {
         $private:ofs=""
         return [String]$characters[$random]
     }
- 
-    function Scramble-String([string]$inputString){     
-        $characterArray = $inputString.ToCharArray()   
-        $scrambledStringArray = $characterArray | Get-Random -Count $characterArray.Length     
+
+    function Scramble-String([string]$inputString){
+        $characterArray = $inputString.ToCharArray()
+        $scrambledStringArray = $characterArray | Get-Random -Count $characterArray.Length
         $outputString = -join $scrambledStringArray
         return $outputString
     }
@@ -95,6 +98,20 @@ function read-username {
     }
 
 
+# Funktion: nach Passwort fragen (nur für Admins von Business-PCs)
+
+    function read-adminpassword {
+        $mypasswd = Read-Host "Passwort"
+        if (!$mypasswd) {
+            Write-Host "Bitte gib ein Passwort ein!" -F Red
+            read-adminpassword
+        } else {
+            $script:pw = $mypasswd
+        }
+        $script:pws = ConvertTo-SecureString -String $pw -AsPlainText -Force
+    }
+
+
 # Funktion: Benutzerinfo in Datei eintragen
 
     function write-userinfo {
@@ -107,7 +124,8 @@ function read-username {
         echo "Passwort: $pw `n" >> $env:USERPROFILE\Desktop\$filename
 
         Write-Host "Der Benutzer $username ($fullname) wurde erfolgreich erstellt." -F Green
-        Write-Host "Der Benutzername und das Passwort wurden in die Textdatei Benutzerliste.txt auf dem Desktop eingetragen." -F Yellow
+        Write-Host "Der Benutzername und das Passwort wurden in die Textdatei $filename auf dem Desktop eingetragen." -F Yellow
+        $script:pwdfile = 1
     }
 
 
@@ -136,14 +154,14 @@ function read-username {
             $script:doit = 0
             } else {
             Write-Host "Bitte 'j' oder 'n' eingeben (Enter für Ja)" -F Red
-            ask-addmoreuser
+            ask-changeadminpw
         }
     }
 
 
 # Firefox Pfad ermitteln
 
-    function get-firefox {
+    function check-firefox {
         $mysoftware = "Firefox"
         # Prüfe auf 32-Bit oder 64-Bit:
             $check32 = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -like "*$mysoftware*"}
@@ -151,6 +169,7 @@ function read-username {
                 $check64 = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | where {$_.DisplayName -like "*$mysoftware*"}
                 if (!$check64) {
                     Write-Host "FEHLER: $mysoftware ist nicht installiert" -F Red
+                    $script:firefox = 0
                 } else {
                     $details = $check64
                 }
@@ -162,125 +181,153 @@ function read-username {
 }
 
 
-# Funktion: Script-Verzeichnis auslesen
-
-    function Get-ScriptDirectory {
-        Split-Path -parent $PSCommandPath
-    }
-
-
-# Funktion: Fehlercheck 
-
-     function errorcheck {
-        if ($?) {
-            write-host $yeah -F Green
-        } else {
-            write-host $shit -F Red
-            $script:errorcount = $script:errorcount + 1
-        }
-    }
-
-
 
 # ---------------- Ende: Funktionen definieren ---------------------
 
 $scriptpath = Get-ScriptDirectory
 
-ask-adduser
 
-while ($doit -eq 1) {
+# neuen lokalen Benutzer anlegen
 
-    $errorcount = 0
+    if ($global:kindof -eq "privat") {
 
-    # Daten abfragen / generieren
+        ask-adduser
 
-        read-fullname
-        read-username
-        read-password
+        while ($doit -eq 1) {
 
-        if ($pws) {
-            Write-Host "OK: Passwort wurde automatisch generiert bzw. manuell vergeben" -F Green
-        } else {
-            Write-Host "FEHLER: Passwort konnte nicht generiert werden bzw. ist ungültig" -F Red
-            $errorcount = $errorcount + 1
+            # Daten abfragen / generieren
+
+                read-fullname
+                read-username
+                read-password
+
+                if ($pws) {
+                    Write-Host "OK: Passwort wurde automatisch generiert bzw. manuell vergeben" -F Green
+                } else {
+                    Write-Host "FEHLER: Passwort konnte nicht generiert werden bzw. ist ungültig" -F Red
+                    $global:errorcount = $global:errorcount + 1
+                }
+
+            # User anlegen
+
+            if (($pws) -and ($username)) {
+
+                New-LocalUser -Name $username -FullName $fullname -Password $pws -PasswordNeverExpires | Out-Null
+                if ($?) {
+                    write-userinfo
+
+                    # Benutzer zur Gruppe "Benutzer" hinzufügen
+                        $yeah = "OK: $fullname wurde erfolgreich zur Gruppe 'Benutzer' hinzugefügt"
+                        $shit = "FEHLER: $fullname konnte nicht zur Gruppe 'Benutzer' hinzugefügt werden"
+                        Add-LocalGroupMember -Name Benutzer -Member $username
+                        errorcheck
+
+                } else {
+                    Write-Host "FEHLER: Benutzer konnte nicht erstellt werden." -F Red
+                    $global:errorcount = $global:errorcount + 1
+                }
+
+            } else {
+
+                Write-Host "FEHLER: Kein Benutzername oder kein Passwort angegeben?!" -F Red
+                Write-Host "FEHLER: Benutzer wurde nicht erstellt." -F Red
+                $global:errorcount = $global:errorcount + 1
+            }
+
+            # Frage: Weiteren Benutzter anlegen?
+
+            ask-addmoreuser
         }
-
-    # User anlegen
-
-    if (($pws) -and ($username)) {
-
-        New-LocalUser -Name $username -FullName $fullname -Password $pws -PasswordNeverExpires | Out-Null
-        if ($?) {
-            write-userinfo
-
-            # Benutzer zur Gruppe "Benutzer" hinzufügen
-                $yeah = "OK: $fullname wurde erfolgreich zur Gruppe 'Benutzer' hinzugefügt"
-                $shit = "FEHLER: $fullname konnte nicht zur Gruppe 'Benutzer' hinzugefügt werden"
-                Add-LocalGroupMember -Name Benutzer -Member $username
-                errorcheck
-            
-        } else {
-            Write-Host "FEHLER: Benutzer konnte nicht erstellt werden." -F Red
-            $errorcount = $errorcount + 1
-        }
-
-    } else {
-
-        Write-Host "FEHLER: Kein Benutzername oder kein Passwort angegeben?!" -F Red
-        Write-Host "FEHLER: Benutzer wurde nicht erstellt." -F Red
-        $errorcount = $errorcount + 1
     }
-
-    # Frage: Weiteren Benutzter anlegen?
-
-    ask-addmoreuser
-}
-
 
 # Admin-Kennwort ändern
 
     $username = "admin"
     $fullname = "Admin Kennwort"
-    
+
     ask-changeadminpw
     if ($doit -eq 1) {
-        
+
     # Passwort vergeben
 
-        read-password
+        # Bei Privat-PC mit Option Passwort genrerieren
 
-        if ($pws) {
-            Write-Host "OK: Passwort wurde automatisch generiert bzw. manuell vergeben" -F Green
+        if ($global:kindof -eq "privat") {
+
+            read-password
+
+            if ($pws) {
+                Write-Host "OK: Passwort wurde automatisch generiert bzw. manuell vergeben" -F Green
+            } else {
+                Write-Host "FEHLER: Passwort konnte nicht generiert werden bzw. ist ungültig" -F Red
+                $global:errorcount = $global:errorcount + 1
+            }
+
+        # Bei Business-PC ohne Passwort generieren
+
         } else {
-            Write-Host "FEHLER: Passwort konnte nicht generiert werden bzw. ist ungültig" -F Red
-            $errorcount = $errorcount + 1
+
+            read-adminpassword
+
+            if ($pws) {
+                Write-Host "OK: Admin-Kennwort wird geändert..." -F Green
+            } else {
+                Write-Host "FEHLER: Passwort konnte nicht vergeben werden bzw. ist ungültig" -F Red
+                $global:errorcount = $global:errorcount + 1
+            }
         }
-    
+
     # Passwört ändern
-        
+
         Set-LocalUser -Name $username -Password $pws
         if ($?) {
+            Write-Host "OK: Admin-Kennwort wurde geändert" -F Green
             write-userinfo
-        } else {
+         } else {
             Write-Host "FEHLER: Admin-Kennwort konnte nicht geändert werden." -F Red
-            $errorcount = $errorcount + 1
+            $global:errorcount = $global:errorcount + 1
         }
     }
 
 
-# Script Ende
+# Passwortliste
 
-    del $scriptpath\hostname.tmp
-    if ($errorcount -lt 1) {
-    write-host "
-        ENDE: Alles fertig
+    if ($global:kindof -eq "privat") {
+        del $scriptpath\hostname.tmp
+
+        if ($pwdfile -eq 1) {
+
+            # Prüfe, ob Firefox installiert ist: installire oder starte Firefox
+            check-firefox
+            if ($script:firefox -eq 0) {
+                Write-Host "Ohne Firefox kann die Passwort-Datei nicht in die Nextcloud hochgeladen werden" -F Red
+                write-Host "Offensichtlich ist noch keine Software installiert worden. Das ist nicht gut..." -F Yellow
+                $question =  "Möchtest du das jetzt nachholen?"
+                ask-yesno $question
+                if ($doit -eq 1) {
+                    & $Global:scriptpath/install-apps.ps1
+                } else {
+                    Write-Host "Achtung: Die Passwortliste wird NICHT in die Nextcloud hochgeladen." -F Red
+                    Write-Host "Sorge dafür, dass du das Admin-Passwort kennst!" -F Red
+                }
+            } else {
+                Write-Host "
+                Nextcloud wird per Firefox gestartet. Bitte lade hier die gerade erstellte Benutzerliste hoch.
+                " -F Yellow
+                $script:firefox = "done"
+                & $mypath\firefox.exe https://cloud.fa-netz.de/index.php/s/wQcTEbFGkaQgMNw
+            }
+        }
+    }
+
+    if (($global:kindof -eq "privat") -and ($pwdfile -eq 1) -and ($script:firefox -ne "done")) {
+        check-firefox
+        Write-Host "
         Nextcloud wird per Firefox gestartet. Bitte lade hier die gerade erstellte Benutzerliste hoch.
-        " -F Green
-    get-firefox
-    & $mypath\firefox.exe https://cloud.fa-netz.de/index.php/s/wQcTEbFGkaQgMNw
+        " -F Yellow
+        & $mypath\firefox.exe https://cloud.fa-netz.de/index.php/s/wQcTEbFGkaQgMNw
+    }
 
-} else {
-    write-host "
-        ENDE: Es sind Fehler auftretreten. Bitte prüfe das Ergebnis.
-        " -F Red
-}
+# E N D E
+
+Write-Host "FERTIG: Konfiguration von Benutzern und Kennwörtern abgeschlossen" -F Green

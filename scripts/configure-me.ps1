@@ -6,7 +6,7 @@
 
     author: flo.alt@fa-netz.de
     https://github.com/floalt/installparty
-    version: 0.62
+    version: 0.7
 
 
     Vorlage für neuen Registry-Block:
@@ -67,7 +67,7 @@
 
 
 # Funktion: Desktop-Verknüpfung löschen
-    
+
     function del-desktoplink {
         $yeah ="OK: $unwantedlink wurde vom Desktop gelöscht"
         $shit ="FEHLER: $title konnte nicht vom Desktop gelöscht werden"
@@ -111,7 +111,7 @@ $script:errorcount = 0
 
 
 # Cortana / Bing Search deaktivieren
-    
+
     $title = "Bing Search"
     $action = "deaktiviert"
     $key = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search"
@@ -161,7 +161,7 @@ $script:errorcount = 0
     $type = "DWORD"
     $value = 0
     set-registryvalue
-    
+
     $title = "Freihand- und Eingabeanpassung (2)"
     $action = "deaktiviert"
     $key = "HKCU:\Software\Microsoft\Personalization\Settings"
@@ -185,7 +185,7 @@ $script:errorcount = 0
     $type = "String"
     $value = "Deny"
     set-registryvalue
-    
+
     $title = "Zugriff auf Bild-Bibliothek"
     $action = "deaktiviert"
     $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\picturesLibrary"
@@ -231,7 +231,7 @@ $script:errorcount = 0
 # Appdata Defaults
 
     $7zpath = "C:\Program Files\7-Zip"
-    $7zfile = "files\appdata.7z"
+    $7zfile = "appdata.7z"
     $appdtadir = $env:APPDATA
     $yeah = "OK: Appdata Default wurden erfolgreich erstellt"
     $shit = "FEHLER: Appdata Defaults konnten nicht erstell werden"
