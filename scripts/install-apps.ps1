@@ -3,7 +3,7 @@
 	Installiert Standard-Software auf einem neuen PC
 	lädt Textdatei Softwarequellen von software.txt
 	Aufruf durch start-party4pc.cmd
-    version: 0.7
+    version: 0.71
 
 #>
 
@@ -18,9 +18,9 @@
 
 $global:scriptpath = Get-ScriptDirectory
 
-# $global:scriptpath = "C:\Users\admin\Nextcloud\Programmieren\installparty\development"
+# $global:scriptpath = "C:\installparty\scripts"
 
-$global:kindof = "privat"
+$global:kindof = "raab"
 
 
 # ---------------- ENDE Development ------------------
@@ -84,6 +84,7 @@ $global:kindof = "privat"
         'PDF XChange Editor'
         'Teamviewer Host'
         'CallAssist'
+        'Nextcloud Client'
     )
 
 
