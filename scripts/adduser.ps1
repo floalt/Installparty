@@ -3,7 +3,7 @@
     Lokale Benutzerkonten anlegen
     wird bei PCs angewandt, die nicht in einer Domäne verwaltet werden
     Aufruf durch start-party4pc.cmd
-    version: 0.7
+    version: 0.71
 
 
 #>
@@ -282,7 +282,7 @@ $scriptpath = Get-ScriptDirectory
         Set-LocalUser -Name $username -Password $pws
         if ($?) {
             Write-Host "OK: Admin-Kennwort wurde geändert" -F Green
-            write-userinfo
+            if ($global:kindof -eq "privat") {write-userinfo}
          } else {
             Write-Host "FEHLER: Admin-Kennwort konnte nicht geändert werden." -F Red
             $global:errorcount = $global:errorcount + 1
