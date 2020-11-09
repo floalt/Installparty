@@ -5,7 +5,7 @@
 
     author: flo.alt@fa-netz.de
     https://github.com/floalt/installparty/blob/master/executionpolicy.cmd
-    version: 0.7
+    version: 0.71
 
 #>
 
@@ -204,7 +204,10 @@ $install_apps = $doit
     # 1) Konfigurationen für alle PCs
     & $Global:scriptpath/pc-allkind.ps1
 
-    # 2) Konfiguration individuell nach Firma / Privat
+    # 2) Konfigurationen für alle PCs
+    & $Global:scriptpath/pc-allbusiness.ps1
+
+    # 3) Konfiguration individuell nach Firma / Privat
     switch -Wildcard($global:kindof) {
         ascair {& $Global:scriptpath/pc-ascair.ps1; break}
         biomichl {& $Global:scriptpath/pc-biomichl.ps1; break}

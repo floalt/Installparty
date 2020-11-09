@@ -2,7 +2,7 @@
 
 	Konfigurationen für alle PCs
 	Aufruf durch start-party4pc.cmd
-    version: 0.7
+    version: 0.71
 
 
     Vorlage für neuen Registry-Block:
@@ -16,6 +16,7 @@
     set-registry
 #>
 
+# ---------------- Hier werden alle Funktionen definiert ----------------
 
 # Funktion: Neuen Hostname abfragen
 
@@ -28,6 +29,11 @@
             $script:doit = 0
         }
     }
+
+
+# ------------------- ENDE Definition der Funktionen --------------------
+
+# ------------------- Hier beginnt der Befehlsablauf --------------------
 
 
 Write-Host "INFO: Beginne mit allgemeinen Konfigurationen" -F Yellow

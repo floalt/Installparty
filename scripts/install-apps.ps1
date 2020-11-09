@@ -3,7 +3,7 @@
 	Installiert Standard-Software auf einem neuen PC
 	lädt Textdatei Softwarequellen von software.txt
 	Aufruf durch start-party4pc.cmd
-    version: 0.71
+    version: 0.72
 
 #>
 
@@ -32,11 +32,11 @@ $global:kindof = "raab"
 
     $inst_standard = @(
         '7-Zip'
-        'Google Chrome'
-        'Irfan View'
-        'Mozilla Firefox'
-        'KeePass'
-        'VLC Media Player'
+#        'Google Chrome'
+#        'Irfan View'
+#        'Mozilla Firefox'
+#        'KeePass'
+#        'VLC Media Player'
     )
 
     # Software indiviuell
@@ -66,15 +66,13 @@ $global:kindof = "raab"
     )
 
     $inst_isarland = @(
-        'ESET ERA'
-        'ESET Endpoint'
+#        'ESET ERA'
+#        'ESET Endpoint'
 #        'Foxit Reader'
-#        'Freemind'
-        'GFI Agent'
-#        'Launchy'
-#        'Open Java JDK'
-        'Teamviewer 11'
-        'CallAssist'
+#        'GFI Agent'
+        'Launchy'
+#        'Teamviewer 11'
+#        'CallAssist'
     )
 
     $inst_raab = @(

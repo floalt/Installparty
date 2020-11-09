@@ -55,4 +55,4 @@ $filestodelete = @(
 
 # E N D E
 
-Write-Host "FERTIG: Konfigurationen für Isarland Ökokiste erledigt" -F Green
+Write-Host "FERTIG: Konfigurationen für Raab Home Company erledigt" -F Green
