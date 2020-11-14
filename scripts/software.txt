@@ -7,10 +7,12 @@ Libre Office;7.0.2;https://mirror1.hs-esslingen.de/pub/Mirrors/tdf/libreoffice/s
 Thunderbird;78.3.2;https://download.mozilla.org/?product=thunderbird-78.3.2-msi-SSL&os=win64&lang=de;thunderbird-78.3.2.msi;/passive
 Nextcloud Client;3.0.2;https://github.com/nextcloud/desktop/releases/download/v3.0.2/Nextcloud-3.0.2-setup.exe;Nextcloud-3.0.2-setup.exe;/S
 ESET Endpoint;latest;https://download.eset.com/com/eset/apps/business/ees/windows/latest/ees_nt64.msi;ees_nt64.msi;/passive CFG_POTENTIALLYUNWANTED_ENABLED=1 CFG_LIVEGRID_ENABLED=0
+ESET Internet Security;latest;https://download.eset.com/com/eset/apps/home/eis/windows/latest/eis_nt64.exe;eis_nt64.exe;--silent --accepteula
 Launchy;2.5;https://www.launchy.net/downloads/win/Launchy2.5.exe;Launchy2.5.exe;/verysilent
 Google Chrome;latest;http://dl.google.com/chrome/install/375.126/chrome_installer.exe;chrome_installer.exe;
 Mozilla Firefox;latest-build;https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=de;firefoxsetup.msi;/passive
 Teamviewer 11;latest;https://download.teamviewer.com/download/version_11x/TeamViewer_Setup.exe;TeamViewer_Setup.exe;/S
+Teamviewer 11 Host;latest;https://download.teamviewer.com/download/version_11x/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
 Teamviewer Host;latest;https://download.teamviewer.com/download/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
 PDF XChange Editor;static;https://doku.fa-netz.de/downloads/PDFX5.exe;PDFX5.exe;/VERYSILENT /NORESTART
 CallAssist;3.6.4.11-3356;https://doku.fa-netz.de/downloads/PBX_Call_Assist_3_6_4_11_3356_de-DE.msi;PBX_Call_Assist_3_6_4_11_3356_de-DE.msi;/passive
