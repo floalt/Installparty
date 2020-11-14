@@ -2,7 +2,7 @@
 
 	Konfigurationen für Isarland Ökokiste
 	Aufruf durch start-party4pc.cmd
-    version: 0.71
+    version: 0.72
 
 #>
 
@@ -11,6 +11,7 @@ Write-Host "INFO: Beginne mit Konfigurationen für Isarland Ökokiste" -F Yellow
 $global:steps = $global:steps + 1
 
 $workgroup = "isarland"
+$fabcert = "customerfiles\cacert_f4m_sha2.cer"
 
 $filestodelete = @(
     )
@@ -39,9 +40,19 @@ $filestodelete = @(
         Add-Computer -WorkgroupName $workgroup ;errorcheck
     }
 
+
 # Dateien löschen
 
     delete-files
+
+
+# Import Fab4Minds Root Zertifikat
+
+    $yeah = "OK: Root-Zertifikat für Fab4Minds erfolgreich importiert"
+    $shit = "Fehler: Root-Zertifikat für Fab4Minds konnte nicht importiert werden"
+    Import-Certificate -FilePath $global:scriptpath\$fabcert -CertStoreLocation ‘Cert:\LocalMachine\Root’ | Out-Null
+    errorcheck
+
 
 # E N D E
 
