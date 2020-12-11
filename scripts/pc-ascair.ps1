@@ -1,21 +1,21 @@
 ﻿<#
 
-	Konfigurationen für Isarland Ökokiste
+	Konfigurationen für ASCAIR Marine & Aviation
 	Aufruf durch start-party4pc.cmd
-    version: 0.74
+    version: 0.62
 
 #>
 
 
-Write-Host "INFO: Beginne mit Konfigurationen für Isarland Ökokiste" -F Yellow
+Write-Host "INFO: Beginne mit Konfigurationen für ASCAIR Marine & Aviation" -F Yellow
+
 $global:steps = $global:steps + 1
 
-$workgroup = "isarland"
-$fabcert = "customerfiles\cacert_f4m_sha2.cer"
-$tv_config = "teamviewer_isarland.tvopt"
+$workgroup = "ascair"
+$tv_config = "teamviewer_ascair.tvopt"
 
 $filestodelete = @(
-    ""
+    "C:\Users\Public\Desktop\TeamViewer Host"
     )
 
 # ---------------- Hier werden alle Funktionen definiert ----------------
@@ -44,24 +44,16 @@ $filestodelete = @(
         Add-Computer -WorkgroupName $workgroup ;errorcheck
     }
 
-
 # Dateien löschen
 
     delete-files
-
-
-# Import Fab4Minds Root Zertifikat
-
-    $yeah = "OK: Root-Zertifikat für Fab4Minds erfolgreich importiert"
-    $shit = "Fehler: Root-Zertifikat für Fab4Minds konnte nicht importiert werden"
-    Import-Certificate -FilePath $global:scriptpath\$fabcert -CertStoreLocation ‘Cert:\LocalMachine\Root’ | Out-Null
-    errorcheck
 
 # Teamviewer-Config auf Desktop kopieren
 
     cp $global:scriptpath\customerfiles\$tv_config $env:USERPROFILE\Desktop
 
 
+
 # E N D E
 
-Write-Host "FERTIG: Konfigurationen für Isarland Ökokiste erledigt" -F Green
+Write-Host "FERTIG: Konfigurationen für ASCAIR Marine & Aviation erledigt" -F Green

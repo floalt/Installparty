@@ -1,25 +1,26 @@
 ﻿<#
 
-	Konfigurationen für Isarland Ökokiste
+	Konfigurationen für Biomichl OHG
 	Aufruf durch start-party4pc.cmd
-    version: 0.74
+    version: 0.62
 
 #>
 
 
-Write-Host "INFO: Beginne mit Konfigurationen für Isarland Ökokiste" -F Yellow
+﻿Write-Host "INFO: Beginne mit Konfigurationen für Biomichl OHG" -F Yellow
 $global:steps = $global:steps + 1
 
-$workgroup = "isarland"
-$fabcert = "customerfiles\cacert_f4m_sha2.cer"
-$tv_config = "teamviewer_isarland.tvopt"
+$workgroup = "biomichl"
+$tv_config = "teamviewer_biomichl.tvopt"
 
 $filestodelete = @(
-    ""
+    "$env:PUBLIC\Desktop\TeamViewer Host"
     )
 
 # ---------------- Hier werden alle Funktionen definiert ----------------
 
+
+# Lösche Dateien
 
 # Lösche Dateien
 
@@ -44,18 +45,9 @@ $filestodelete = @(
         Add-Computer -WorkgroupName $workgroup ;errorcheck
     }
 
-
 # Dateien löschen
 
     delete-files
-
-
-# Import Fab4Minds Root Zertifikat
-
-    $yeah = "OK: Root-Zertifikat für Fab4Minds erfolgreich importiert"
-    $shit = "Fehler: Root-Zertifikat für Fab4Minds konnte nicht importiert werden"
-    Import-Certificate -FilePath $global:scriptpath\$fabcert -CertStoreLocation ‘Cert:\LocalMachine\Root’ | Out-Null
-    errorcheck
 
 # Teamviewer-Config auf Desktop kopieren
 
@@ -64,4 +56,4 @@ $filestodelete = @(
 
 # E N D E
 
-Write-Host "FERTIG: Konfigurationen für Isarland Ökokiste erledigt" -F Green
+Write-Host "FERTIG: Konfigurationen für Biomichl OHG erledigt" -F Green

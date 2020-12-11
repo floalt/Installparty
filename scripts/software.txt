@@ -6,6 +6,7 @@ VLC Media Player;3.0.11;https://mirror.init7.net/videolan/vlc/3.0.11/win64/vlc-3
 Libre Office;7.0.2;https://mirror1.hs-esslingen.de/pub/Mirrors/tdf/libreoffice/stable/7.0.2/win/x86_64/LibreOffice_7.0.2_Win_x64.msi;LibreOffice_7.0.2_Win_x64.msi;/passive REGISTER_ALL_MSO_TYPES=1
 Thunderbird;78.3.2;https://download.mozilla.org/?product=thunderbird-78.3.2-msi-SSL&os=win64&lang=de;thunderbird-78.3.2.msi;/passive
 Nextcloud Client;3.0.2;https://github.com/nextcloud/desktop/releases/download/v3.0.2/Nextcloud-3.0.2-setup.exe;Nextcloud-3.0.2-setup.exe;/S
+Greenshot;.12.10.6;https://github.com/greenshot/greenshot/releases/download/Greenshot-RELEASE-1.2.10.6/Greenshot-INSTALLER-1.2.10.6-RELEASE.exe;Greenshot-1.2.10.6.exe;/VERYSILENT /SUPPRESSMESSAGEBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NORESTART
 ESET Endpoint;latest;https://download.eset.com/com/eset/apps/business/ees/windows/latest/ees_nt64.msi;ees_nt64.msi;/passive CFG_POTENTIALLYUNWANTED_ENABLED=1 CFG_LIVEGRID_ENABLED=0
 ESET Internet Security;latest;https://download.eset.com/com/eset/apps/home/eis/windows/latest/eis_nt64.exe;eis_nt64.exe;--silent --accepteula
 Launchy;2.5;https://www.launchy.net/downloads/win/Launchy2.5.exe;Launchy2.5.exe;/verysilent

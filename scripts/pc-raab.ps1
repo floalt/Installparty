@@ -2,7 +2,7 @@
 
 	Konfigurationen für Raab Home Company
 	Aufruf durch start-party4pc.cmd
-    version: 0.7
+    version: 0.72
 
 #>
 
@@ -11,6 +11,7 @@
 $global:steps = $global:steps + 1
 
 $workgroup = "raab"
+$tv_config = "teamviewer_raab.tvopt"
 
 $filestodelete = @(
     "$env:PUBLIC\Desktop\Office2PDF5.lnk",
@@ -24,9 +25,11 @@ $filestodelete = @(
 # Lösche Dateien
 
     function delete-files {
-        foreach ($item in $filestodelete) {
-            if (test-path $item) {rm $item}
-        }
+		if ($filestodelete) {
+		    foreach ($item in $filestodelete) {
+		        if (test-path $item) {rm $item}
+		    }
+		}
     }
 
 # ------------------- ENDE Definition der Funktionen --------------------
@@ -35,9 +38,12 @@ $filestodelete = @(
 
 # Arbeitsgruppe ändern
 
-    $yeah = "OK: Der Computer wurde erfolgreich zur Arbeitsgruppe $workgroup hinzugefügt"
-    $shit = "FEHLER: Der Computer konnte nicht zur Arbeitsgruppe $workgroup hinzugefügt werden"
-    Add-Computer -WorkgroupName $workgroup ;errorcheck
+    $workgroupnow = (Get-ComputerInfo).csdomain
+    if ($workgroup -ne $workgroup) {
+        $yeah = "OK: Der Computer wurde erfolgreich zur Arbeitsgruppe $workgroup hinzugefügt"
+        $shit = "FEHLER: Der Computer konnte nicht zur Arbeitsgruppe $workgroup hinzugefügt werden"
+        Add-Computer -WorkgroupName $workgroup ;errorcheck
+    }
 
 
 # Lizenzdatei für PDF Exchange Editor
@@ -52,6 +58,11 @@ $filestodelete = @(
 # Dateien löschen
 
     delete-files
+
+# Teamviewer-Config auf Desktop kopieren
+
+    cp $global:scriptpath\customerfiles\$tv_config $env:USERPROFILE\Desktop
+
 
 # E N D E
 

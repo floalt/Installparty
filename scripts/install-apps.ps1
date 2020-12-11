@@ -72,7 +72,7 @@ $global:kindof = "raab"
         'Foxit Reader'
         'GFI Agent'
         'Launchy'
-        'Teamviewer 11'
+#        'Teamviewer 11'
         'Teamviewer 11 Host'
         'CallAssist'
     )

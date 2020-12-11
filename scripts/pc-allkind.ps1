@@ -2,7 +2,7 @@
 
 	Konfigurationen für alle PCs
 	Aufruf durch start-party4pc.cmd
-    version: 0.71
+    version: 0.72
 
 
     Vorlage für neuen Registry-Block:
@@ -16,6 +16,11 @@
     set-registry
 #>
 
+$filestodelete = @(
+    "$env:PUBLIC\Desktop\Microsoft Edge.lnk"
+	"$env:PUBLIC\Desktop\VLC media player.lnk"
+    )
+
 # ---------------- Hier werden alle Funktionen definiert ----------------
 
 # Funktion: Neuen Hostname abfragen
@@ -28,6 +33,17 @@
         } else {
             $script:doit = 0
         }
+    }
+
+
+# Lösche Dateien
+
+    function delete-files {
+		if ($filestodelete) {
+		    foreach ($item in $filestodelete) {
+		        if (test-path $item) {rm $item}
+		    }
+		}
     }
 
 
@@ -86,6 +102,10 @@ $global:steps = $global:steps + 1
     $title = "Benutzererfahrung und Telemetrie"
     $servicename = "DiagTrack"
     deactivate-service
+
+# Dateien löschen
+
+	delete-files
 
 
 # PC-Namen ändern
