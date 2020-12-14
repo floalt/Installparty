@@ -38,7 +38,7 @@ $filestodelete = @(
 # Arbeitsgruppe ändern
 
     $workgroupnow = (Get-ComputerInfo).csdomain
-    if ($workgroup -ne $workgroup) {
+    if ($workgroup -ne $workgroupnow) {
         $yeah = "OK: Der Computer wurde erfolgreich zur Arbeitsgruppe $workgroup hinzugefügt"
         $shit = "FEHLER: Der Computer konnte nicht zur Arbeitsgruppe $workgroup hinzugefügt werden"
         Add-Computer -WorkgroupName $workgroup ;errorcheck
