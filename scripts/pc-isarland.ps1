@@ -12,7 +12,7 @@ $global:steps = $global:steps + 1
 
 $workgroup = "isarland"
 $fabcert = "customerfiles\cacert_f4m_sha2.cer"
-$tv_config = "teamviewer_isarland.tvopt"
+$tv_config = "teamviewer_isarland.reg"
 
 $filestodelete = @(
     ""
