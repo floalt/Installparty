@@ -50,7 +50,7 @@ $global:steps = $global:steps + 1
 
 
 
-# Remotedesktop deaktivieren
+# Remotedesktop aktivieren
 
     # Registry Key
     $title = "Remotedesktop aktivieren"
@@ -66,7 +66,7 @@ $global:steps = $global:steps + 1
     Enable-NetFirewallRule -DisplayGroup "RemoteDesktop"
     errorcheck
 
- 
+
 
 
 # E N D E

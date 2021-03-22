@@ -69,7 +69,7 @@ $global:kindof = "raab"
     $inst_isarland = @(
         'ESET ERA'
         'ESET Endpoint'
-        'Foxit Reader'
+#        'Foxit Reader'
         'GFI Agent'
         'Launchy'
 #        'Teamviewer 11'
