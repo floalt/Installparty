@@ -17,6 +17,6 @@ Teamviewer 11 Host;latest;https://download.teamviewer.com/download/version_11x/T
 Teamviewer Host;latest;https://customdesign.teamviewer.com/download/version_15x/69ktmfu_windows/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
 PDF XChange Editor;static;https://doku.fa-netz.de/downloads/PDFX5.exe;PDFX5.exe;/VERYSILENT /NORESTART
 CallAssist;3.6.4.16-3932;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;PBX_Call_Assist.msi;/passive
-KeePass;2.47;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
-ESET ERA;latest;https://doku.fa-netz.de/downloads/ESMC_Installer_x64.exe;ESMC_Installer_x64.exe;/S
-GFI Agent;10.9.17;https://doku.fa-netz.de/downloads/agent.exe;agent.exe;/silent
+KeePass;latest;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
+ESET ERA;latest;https://doku.fa-netz.de/downloads/PROTECT_Installer_x64.exe;PROTECT_Installer_x64.exe;/S
+GFI Agent;latest;https://doku.fa-netz.de/downloads/rmmagent.exe;GfiAgent-Setup.exe;/silent
