@@ -4,7 +4,7 @@
     Aufruf durch start-party4pc.cmd
 
     author: flo.alt@fa-netz.de
-    https://github.com/floalt/installparty/blob/master/executionpolicy.cmd
+    https://github.com/floalt/installparty
     version: 0.71
 
 #>
