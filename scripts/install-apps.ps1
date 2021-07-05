@@ -8,24 +8,6 @@
 #>
 
 
-<# ---------------- BEGINN Development ------------------
-
-# Script-Verzeichnis auslesen
-
-    function Get-ScriptDirectory {
-        Split-Path -parent $PSCommandPath
-    }
-
-$global:scriptpath = Get-ScriptDirectory
-
-# $global:scriptpath = "C:\installparty\scripts"
-
-$global:kindof = "raab"
-
-
-# ---------------- ENDE Development ------------------
-#>
-
 # ---------- Konfiguratin der Variablen --------------
 
     # Standard-Software für alle
@@ -69,12 +51,11 @@ $global:kindof = "raab"
     $inst_isarland = @(
         'ESET ERA'
         'ESET Endpoint'
-#        'Foxit Reader'
         'GFI Agent'
+#        'Nextcloud Client'
         'Launchy'
 #        'Teamviewer 11'
         'Teamviewer 11 Host'
-        'CallAssist'
     )
 
     $inst_raab = @(
