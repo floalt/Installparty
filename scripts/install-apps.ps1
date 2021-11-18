@@ -1,7 +1,7 @@
 <#
 
 	Installiert Standard-Software auf einem neuen PC
-	lädt Textdatei Softwarequellen von software.txt
+	lï¿½dt Textdatei Softwarequellen von software.txt
 	Aufruf durch start-party4pc.cmd
     version: 0.73
 
@@ -10,7 +10,7 @@
 
 # ---------- Konfiguratin der Variablen --------------
 
-    # Standard-Software für alle
+    # Standard-Software fï¿½r alle
 
     $inst_standard = @(
         '7-Zip'
@@ -51,8 +51,9 @@
     $inst_isarland = @(
         'ESET ERA'
         'ESET Endpoint'
+        'CRM Connect'
         'GFI Agent'
-#        'Nextcloud Client'
+        'Nextcloud Client'
         'Launchy'
 #        'Teamviewer 11'
         'Teamviewer 11 Host'
@@ -134,7 +135,7 @@ $software_list = $scriptpath + "\software.txt"
                 errorcheck
             }
         } else {
-            Write-Host "FEHLER: Installation-Datei hat keine gültige Dateierweiterung (exe oder msi)" -ForegroundColor Red
+            Write-Host "FEHLER: Installation-Datei hat keine gï¿½ltige Dateierweiterung (exe oder msi)" -ForegroundColor Red
         }
     }
 
@@ -149,9 +150,9 @@ $software_list = $scriptpath + "\software.txt"
     $all_software = Import-Csv -Path $software_list -Delimiter ";"
 
 
-# Softwareliste für Standard-Software bauen
+# Softwareliste fï¿½r Standard-Software bauen
 
-    # Tempfile für Softwareliste vorbereiten
+    # Tempfile fï¿½r Softwareliste vorbereiten
     $tmpfile = "$env:TEMP\softwarenow.txt"
     Get-Content -path $software_list -head 1 | Out-File $tmpfile
 
@@ -163,7 +164,7 @@ $software_list = $scriptpath + "\software.txt"
         $match.name + ";" + $match.ver + ";" + $match.url + ";" + $match.file + ";" + $match.param | Out-File $tmpfile -Append
     }
 
-# Softwareliste für zusätzliche Software bauen
+# Softwareliste fï¿½r zusï¿½tzliche Software bauen
 
     # Was wird installiert?
     switch -Wildcard($global:kindof) {

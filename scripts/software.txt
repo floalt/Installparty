@@ -20,3 +20,4 @@ CallAssist;3.6.4.16-3932;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;P
 KeePass;latest;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
 ESET ERA;latest;https://doku.fa-netz.de/downloads/PROTECT_Installer_x64.exe;PROTECT_Installer_x64.exe;/S
 GFI Agent;latest;https://doku.fa-netz.de/downloads/GfiAgent-Setup.exe;GfiAgent-Setup.exe;/silent
+CRM Connect;latest;https://doku.fa-netz.de/downloads/crm.exe;crm.exe;/S
