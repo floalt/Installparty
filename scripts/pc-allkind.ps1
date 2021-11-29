@@ -58,10 +58,10 @@ $global:steps = $global:steps + 1
 # Drucker löschen
 
     $printer = "Microsoft XPS Document Writer"
-    delete-unwantedprinter $printer
+    remove-unwantedprinter $printer
 
     $printer = "Fax"
-    delete-unwantedprinter $printer
+    remove-unwantedprinter $printer
 
 
 # Telemetrie deaktivieren

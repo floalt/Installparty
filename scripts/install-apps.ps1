@@ -248,9 +248,10 @@ $ProgressPreference = 'Continue'
         if ($keepath) {
 
             $name = "KeePass Language & Script Files"
-            $url = "https://doku.fa-netz.de/downloads/keepasfiles.zip"
-            $zipfile = $mytemp + "\" + "keepasfiles.zip"
+            $url = "https://doku.fa-netz.de/downloads/keepassfiles.zip"
+            $zipfile = $mytemp + "\" + "keepassfiles.zip"
             
+            $file = $zipfile
             download
 
             $yeah = "OK: KeePass Language & Script Files erfolgreich kopiert."
