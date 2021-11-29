@@ -38,10 +38,10 @@ $filestodelete = @(
 
 # Lösche Dateien
 
-    function delete-files {
+    function remove-files {
 		if ($filestodelete) {
 		    foreach ($item in $filestodelete) {
-		        if (test-path $item) {rm $item}
+		        if (test-path $item) {Remove-Item $item}
 		    }
 		}
     }
@@ -105,7 +105,7 @@ $global:steps = $global:steps + 1
 
 # Dateien löschen
 
-	delete-files
+	remove-files
 
 
 # PC-Namen ändern
@@ -129,7 +129,7 @@ $global:steps = $global:steps + 1
 
     } else {
         Write-Host "OK: Der Hostname bleibt unverändert." -F Yellow
-        echo $hostname > $scriptpath\hostname.tmp
+        Write-Output $hostname > $scriptpath\hostname.tmp
     }
 
 

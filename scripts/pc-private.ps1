@@ -35,11 +35,11 @@ $global:steps = $global:steps + 1
 
 # Funktion: Desktop-Verknüpfung löschen
 
-    function del-desktoplink {
+    function remove-desktoplink {
         $yeah ="OK: $unwantedlink wurde vom Desktop gelöscht"
         $shit ="FEHLER: $title konnte nicht vom Desktop gelöscht werden"
         if (Test-Path $env:PUBLIC\Desktop\$unwantedlink.lnk) {
-            del $env:PUBLIC\Desktop\$unwantedlink.lnk
+            Remove-Item $env:PUBLIC\Desktop\$unwantedlink.lnk
             errorcheck
         }
     }
@@ -53,7 +53,7 @@ $global:steps = $global:steps + 1
         if (Test-Path $linkpath) {
             $yeah = "OK: Verknüpfung $linkfile wurde erstellt"
             $shit = "FEHLER: Verknüpfung $linkfile konnte nicht erstellt werden"
-            cp $linkpath $env:PUBLIC\Desktop
+            Copy-Item $linkpath $env:PUBLIC\Desktop
             errorcheck
         }
     }
@@ -85,8 +85,8 @@ $global:steps = $global:steps + 1
     if (!(Test-Path $defaultpath\DefaultLayouts-original.xml)) {
         $yeah = "OK: Startmenü-Kacheln werden für den nächsten neuen User entfernt"
         $shit = "FEHLER: Starmenü-Kacheln konnten nicht kongifuriert werden"
-        ren $defaultpath\DefaultLayouts.xml $defaultpath\DefaultLayouts-original.xml
-        copy $scriptpath\startmenu.xml $defaultpath\DefaultLayouts.xml
+        Rename-Item $defaultpath\DefaultLayouts.xml $defaultpath\DefaultLayouts-original.xml
+        Copy-Item $scriptpath\startmenu.xml $defaultpath\DefaultLayouts.xml
         errorcheck
     } else {
         write-host "INFO: Einstellungen für Startmenü-Kacheln wurden bereits gesetzt" -F Yellow
@@ -214,10 +214,10 @@ $global:steps = $global:steps + 1
 # Desktop-Verknüpfungen löschen
 
     $unwantedlink = "Acrobat Reader DC"
-    del-desktoplink
+    remove-desktoplink
 
     $unwantedlink = "VLC media player*"
-    del-desktoplink
+    remove-desktoplink
 
 # Desktop-Verknüpfungen erstellen
 

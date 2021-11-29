@@ -1,23 +1,23 @@
 name;ver;url;file;param
-7-Zip;19.00;https://www.7-zip.org/a/7z1900-x64.exe;7z-x64.exe;/S
-Irfan View;4.58;https://download.betanews.com/download/967963863-1/iview458_x64_setup.exe;iviewsetup.exe;/silent /group=1 /assoc=1 /ini=$env:APPDATA\IrfanView
-Adobe Reader;2001320064;ftp://ftp.adobe.com//pub/adobe/reader/win/AcrobatDC/2001320064/AcroRdrDC2001320064_de_DE.exe;AcroRdrDC_de_DE.exe;/sPB
-VLC Media Player;3.0.14;http://download.videolan.org/pub/videolan/vlc/3.0.14/win64/vlc-3.0.14-win64.exe;vlc-win64.exe;/S /L=1031
-Libre Office;7.1.4;https://mirror1.hs-esslingen.de/pub/Mirrors/tdf/libreoffice/stable/7.1.4/win/x86_64/LibreOffice_7.1.4_Win_x64.msi;LibreOffice_Win_x64.msi;/passive REGISTER_ALL_MSO_TYPES=1
-Thunderbird;78.11.0;https://archive.mozilla.org/pub/thunderbird/releases/78.11.0/win64/de/Thunderbird%20Setup%2078.11.0.msi;thunderbird.msi;/passive
-Nextcloud Client;3.2.2;https://github.com/nextcloud/desktop/releases/download/v3.2.2/Nextcloud-3.2.2-x64.msi;Nextcloud-setup.msi;/quiet REMOVE=DesktopShortcut
-Greenshot;.1.2.10.6;https://github.com/greenshot/greenshot/releases/download/Greenshot-RELEASE-1.2.10.6/Greenshot-INSTALLER-1.2.10.6-RELEASE.exe;Greenshot-1.2.10.6.exe;/VERYSILENT /SUPPRESSMESSAGEBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NORESTART
 ESET Endpoint;latest;https://download.eset.com/com/eset/apps/business/ees/windows/latest/ees_nt64.msi;ees_nt64.msi;/passive CFG_POTENTIALLYUNWANTED_ENABLED=1 CFG_LIVEGRID_ENABLED=0
 ESET Internet Security;latest;https://download.eset.com/com/eset/apps/home/eis/windows/latest/eis_nt64.exe;eis_nt64.exe;--silent --accepteula
-Launchy;2.5;https://www.launchy.net/downloads/win/Launchy2.5.exe;Launchy2.5.exe;/verysilent
 Google Chrome;latest;http://dl.google.com/chrome/install/375.126/chrome_installer.exe;chrome_installer.exe;
 Mozilla Firefox;latest-build;https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=de;firefoxsetup.msi;/passive
 Teamviewer 11;latest;https://download.teamviewer.com/download/version_11x/TeamViewer_Setup.exe;TeamViewer_Setup.exe;/S
 Teamviewer 11 Host;latest;https://download.teamviewer.com/download/version_11x/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
 Teamviewer Host;latest;https://customdesign.teamviewer.com/download/version_15x/69ktmfu_windows/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
+Launchy;static-2.5;https://www.launchy.net/downloads/win/Launchy2.5.exe;Launchy2.5.exe;/verysilent
 PDF XChange Editor;static;https://doku.fa-netz.de/downloads/PDFX5.exe;PDFX5.exe;/VERYSILENT /NORESTART
-CallAssist;3.6.4.16-3932;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;PBX_Call_Assist.msi;/passive
-KeePass;latest;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
+7-Zip;19.00;https://doku.fa-netz.de/downloads/7z-x64.exe;7z-x64.exe;/S
+Adobe Reader;2021.007.20099;https://doku.fa-netz.de/downloads/AcroRdrDC.exe;AcroRdrDC_de_DE.exe;/sPB
+CallAssist;3.6.4.21-3932;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;PBX_Call_Assist.msi;/passive
+CRM Connect;1.2.2-5.0.0.2215;https://doku.fa-netz.de/downloads/crm.exe;crm.exe;/S
 ESET ERA;latest;https://doku.fa-netz.de/downloads/PROTECT_Installer_x64.exe;PROTECT_Installer_x64.exe;/S
-GFI Agent;latest;https://doku.fa-netz.de/downloads/GfiAgent-Setup.exe;GfiAgent-Setup.exe;/silent
-CRM Connect;latest;https://doku.fa-netz.de/downloads/crm.exe;crm.exe;/S
+GFI Agent;10.11.8;https://doku.fa-netz.de/downloads/GfiAgent-Setup.exe;GfiAgent-Setup.exe;/silent
+Greenshot;1.2.10.6;https://doku.fa-netz.de/downloads/Greenshot-Setup.exe;Greenshot-Setup.exe;/VERYSILENT /SUPPRESSMESSAGEBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NORESTART
+Irfan View;4.58;https://doku.fa-netz.de/downloads/iviewsetup.exe;iviewsetup.exe;/silent /group=1 /assoc=1 /ini=$env:APPDATA\IrfanView
+KeePass;2.49;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
+Libre Office;7.2.2;https://doku.fa-netz.de/downloads/LibreOffice_Win_x64.msi;LibreOffice_Win_x64.msi;/passive REGISTER_ALL_MSO_TYPES=1
+Nextcloud Client;3.3.6;https://doku.fa-netz.de/downloads/Nextcloud-setup.msi;Nextcloud-setup.msi;/quiet REMOVE=DesktopShortcut
+Thunderbird;91.3.2;https://doku.fa-netz.de/downloads/ThunderbirdSetup.msi;ThunderbirdSetup.msi;/passive
+VLC Media Player;3.0.16;https://doku.fa-netz.de/downloads/vlc-win64.exe;vlc-win64.exe;/S /L=1031

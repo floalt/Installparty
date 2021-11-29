@@ -24,7 +24,7 @@ $filestodelete = @(
 
 # Lösche Dateien
 
-    function delete-files {
+    function remove-files {
 		if ($filestodelete) {
 		    foreach ($item in $filestodelete) {
 		        if (test-path $item) {rm $item}
@@ -48,20 +48,20 @@ $filestodelete = @(
 
 # Lizenzdatei für PDF Exchange Editor
 
-    echo "PXP50-RtYdiRRNw3dfZ6dYoL9DKxevHJNkBJuooBeJUxE7Ll0CejjR+2QM3SaST4LIFEpY" > $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
-    echo "AxG7qtWGiO/UVk6O4bgzOFrUEfRVkIsJluVdJZ012kg+0igJY/ToITyoNNb8HY9gwp9umnoxF/QEm4IQ" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
-    echo "wchND5X6K7QaARrX71646joENfSACJ+UQt04eCZHEbrK8faljKTyVoQHwuSAq/UGJROVZDPMC9t7t+wP" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
-    echo "cAYNbbYB01CYjngPWJxWnmneEZu17zR6Tj7vnCkPBJMX3si3wsVDAXz8VYqGFE6x8Mr6rSJDxbXeC/dr" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
-    echo "ynPTap0XHO7pinCsjTqrOOaEDmgDF0kpLICGWqbjyOs=" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
+    Write-Output "PXP50-RtYdiRRNw3dfZ6dYoL9DKxevHJNkBJuooBeJUxE7Ll0CejjR+2QM3SaST4LIFEpY" > $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
+    Write-Output "AxG7qtWGiO/UVk6O4bgzOFrUEfRVkIsJluVdJZ012kg+0igJY/ToITyoNNb8HY9gwp9umnoxF/QEm4IQ" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
+    Write-Output "wchND5X6K7QaARrX71646joENfSACJ+UQt04eCZHEbrK8faljKTyVoQHwuSAq/UGJROVZDPMC9t7t+wP" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
+    Write-Output "cAYNbbYB01CYjngPWJxWnmneEZu17zR6Tj7vnCkPBJMX3si3wsVDAXz8VYqGFE6x8Mr6rSJDxbXeC/dr" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
+    Write-Output "ynPTap0XHO7pinCsjTqrOOaEDmgDF0kpLICGWqbjyOs=" >> $env:USERPROFILE\Desktop\XChangeEditor-Lizenz.txt
 
 
 # Dateien löschen
 
-    delete-files
+    remove-files
 
 # Teamviewer-Config auf Desktop kopieren
 
-    cp $global:scriptpath\customerfiles\$tv_config $env:USERPROFILE\Desktop
+    Copy-Item $global:scriptpath\customerfiles\$tv_config $env:USERPROFILE\Desktop
 
 
 # E N D E

@@ -1,7 +1,7 @@
 <#
 
 	Installiert Standard-Software auf einem neuen PC
-	l�dt Textdatei Softwarequellen von software.txt
+	lädt Textdatei Softwarequellen von software.txt
 	Aufruf durch start-party4pc.cmd
     version: 0.73
 
@@ -10,7 +10,7 @@
 
 # ---------- Konfiguratin der Variablen --------------
 
-    # Standard-Software f�r alle
+    # Standard-Software für alle
 
     $inst_standard = @(
         '7-Zip'
@@ -74,12 +74,6 @@
 # ------------- ENDE Konfiguratin der Variablen --------------------------
 
 
-Write-Host "INFO: Beginne mit der Software-Installation" -F Yellow
-$global:steps = $global:steps + 1
-
-$software_list = $scriptpath + "\software.txt"
-
-
 
 # ---------------- Hier werden alle Funktionen definiert ----------------
 
@@ -104,7 +98,7 @@ $software_list = $scriptpath + "\software.txt"
         Write-Host "OK: Starte Download $name..." -F Green
         $yeah = "OK: Installations-Datei erfolgreich heruntergeladen."
         $shit = "FEHLER: Installations-Datei konnte leider nicht heruntergeladen werden"
-        wget $url -OutFile $file
+        Invoke-WebRequest $url -OutFile $file
         errorcheck
     }
 
@@ -135,14 +129,44 @@ $software_list = $scriptpath + "\software.txt"
                 errorcheck
             }
         } else {
-            Write-Host "FEHLER: Installation-Datei hat keine g�ltige Dateierweiterung (exe oder msi)" -ForegroundColor Red
+            Write-Host "FEHLER: Installation-Datei hat keine gültige Dateierweiterung (exe oder msi)" -ForegroundColor Red
         }
     }
 
 
+# Programmpfad herausfinden
+
+    function Get-AppPath ($mysoftware) {
+
+        $check32 = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -like "*$mysoftware*"}
+        if (!$check32) {
+            $check64 = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -like "*$mysoftware*"}
+            if ($check64) {
+                Write-Host "OK: found $mysoftware 64-bit." -F Green
+                $details = $check64
+            }
+
+        } else {
+            Write-Host "OK: found $mysoftware 32-bit." -F Green
+            $details = $check32
+        }
+
+        $mypath = $details.InstallLocation
+        return $mypath
+    }
+
 # ------------------- ENDE Definition der Funktionen --------------------
 
 # ------------------- Hier beginnt der Befehlsablauf --------------------
+
+
+
+Write-Host "INFO: Beginne mit der Software-Installation" -F Yellow
+$global:steps = $global:steps + 1
+
+$software_list = $scriptpath + "\software.txt"
+$mytemp = (Get-Item $env:TEMP).fullname
+
 
 
 # Textdatei Softwareliste einlesen
@@ -150,21 +174,21 @@ $software_list = $scriptpath + "\software.txt"
     $all_software = Import-Csv -Path $software_list -Delimiter ";"
 
 
-# Softwareliste f�r Standard-Software bauen
+# Softwareliste für Standard-Software bauen
 
-    # Tempfile f�r Softwareliste vorbereiten
-    $tmpfile = "$env:TEMP\softwarenow.txt"
+    # Tempfile für Softwareliste vorbereiten
+    $tmpfile = "$mytemp\softwarenow.txt"
     Get-Content -path $software_list -head 1 | Out-File $tmpfile
 
     if ($software) {Remove-Variable software}
 
     # Nach den richtigen Objekten in der Gesamtliste suchen und in Tempfile schreiben
     foreach ($result in $inst_standard) {
-        $match = ($all_software | where {$_.name -eq $result})
+        $match = ($all_software | Where-Object {$_.name -eq $result})
         $match.name + ";" + $match.ver + ";" + $match.url + ";" + $match.file + ";" + $match.param | Out-File $tmpfile -Append
     }
 
-# Softwareliste f�r zus�tzliche Software bauen
+# Softwareliste für zusüätzliche Software bauen
 
     # Was wird installiert?
     switch -Wildcard($global:kindof) {
@@ -178,7 +202,7 @@ $software_list = $scriptpath + "\software.txt"
 
     # Nach den richtigen Objekten in der Gesamtliste suchen und in Tempfile schreiben
     foreach ($result in $inst_list) {
-        $match = ($all_software | where {$_.name -eq $result})
+        $match = ($all_software | Where-Object {$_.name -eq $result})
         $match.name + ";" + $match.ver + ";" + $match.url + ";" + $match.file + ";" + $match.param | Out-File $tmpfile -Append
     }
 
@@ -199,7 +223,7 @@ $ProgressPreference = 'SilentlyContinue'
             $name = $app.name
             $ver = $app.ver
             $url = $app.url
-            $file = $env:TEMP + "\" + $app.file
+            $file = $mytemp + "\" + $app.file
             $param = $app.param
 
 
@@ -207,23 +231,38 @@ $ProgressPreference = 'SilentlyContinue'
 
             download
             install
-            rm $file
+            Remove-Item $file
     }
 
 $ProgressPreference = 'Continue'
 
 
+# Install KeePass Language & Plugin Files
+
+    # Programmordner herausfinden
+
+        $keepath = Get-AppPath Keepass
+
+    # Download $ Extract ZIP
+
+        if ($keepath) {
+
+            $name = "KeePass Language & Script Files"
+            $url = "https://doku.fa-netz.de/downloads/keepasfiles.zip"
+            $zipfile = $mytemp + "\" + "keepasfiles.zip"
+            
+            download
+
+            $yeah = "OK: KeePass Language & Script Files erfolgreich kopiert."
+            $shit = "FEHLER: Extrahieren der KeePass Language & Script Files fehlgeschlagen"
+            Expand-Archive $zipfile $keepath -Force; errorcheck
+            
+            Remove-Item $zipfile
+        }
+
+
+
+
 # E N D E
 
 Write-Host "FERTIG: Alle Programme wurden installiert" -F Green
-
-
-
-<#
-
-$KEEPASS_LANGURL = "https://cloud.fa-netz.de/index.php/s/3Ax3NpMJ2JJ32d3/download"
-$KEEPASS_LANGFILE = "German.lngx"
-$KEEPASS_RPCURL = "https://github.com/kee-org/keepassrpc/releases/download/v1.9.0/KeePassRPC.plgx"
-$KEEPASS_RPCFILE = "KeePassRPC.plgx"
-
-#>

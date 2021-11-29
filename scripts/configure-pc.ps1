@@ -60,13 +60,13 @@
 
 # Funktion: Drucker löschen
 
-    function delete-unwantedprinter {
-        $queryprinter = Get-WMIObject -Class Win32_Printer | where {$_.name -eq $printer}
+    function remove-unwantedprinter {
+        $queryprinter = Get-WMIObject -Class Win32_Printer | Where-Object {$_.name -eq $printer}
             if ($queryprinter) {
                Remove-Printer -Name $printer
                write-host "Lösche Drucker $printer"
 
-               $querydelete = Get-WMIObject -Class Win32_Printer | where {$_.name -eq $printer}
+               $querydelete = Get-WMIObject -Class Win32_Printer | Where-Object {$_.name -eq $printer}
                if ($querydelete) {
                     write-host "FEHLER: Der Drucker $printer konnte nicht gelöscht werden" -F Red
                     $script:errorcount = $script:errorcount + 1

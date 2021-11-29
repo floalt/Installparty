@@ -24,10 +24,10 @@ $filestodelete = @(
 
 # Lösche Dateien
 
-    function delete-files {
+    function remove-files {
 		if ($filestodelete) {
 		    foreach ($item in $filestodelete) {
-		        if (test-path $item) {rm $item}
+		        if (test-path $item) {Remove-Item $item}
 		    }
 		}
     }
@@ -47,11 +47,11 @@ $filestodelete = @(
 
 # Dateien löschen
 
-    delete-files
+    remove-files
 
 # Teamviewer-Config auf Desktop kopieren
 
-    cp $global:scriptpath\customerfiles\$tv_config $env:USERPROFILE\Desktop
+    Copy-Item $global:scriptpath\customerfiles\$tv_config $env:USERPROFILE\Desktop
 
 
 # E N D E
