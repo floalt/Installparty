@@ -9,15 +9,14 @@ Teamviewer Host;latest;https://customdesign.teamviewer.com/download/version_15x/
 Launchy;static-2.5;https://www.launchy.net/downloads/win/Launchy2.5.exe;Launchy2.5.exe;/verysilent
 PDF XChange Editor;static;https://doku.fa-netz.de/downloads/PDFX5.exe;PDFX5.exe;/VERYSILENT /NORESTART
 7-Zip;19.00;https://doku.fa-netz.de/downloads/7z-x64.exe;7z-x64.exe;/S
-Adobe Reader;2021.007.20099;https://doku.fa-netz.de/downloads/AcroRdrDC.exe;AcroRdrDC_de_DE.exe;/sPB
-CallAssist;3.6.4.21-3932;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;PBX_Call_Assist.msi;/passive
-CRM Connect;1.2.2-5.0.0.2215;https://doku.fa-netz.de/downloads/crm.exe;crm.exe;/S
-ESET ERA;latest;https://doku.fa-netz.de/downloads/PROTECT_Installer_x64.exe;PROTECT_Installer_x64.exe;/S
-GFI Agent;10.11.8;https://doku.fa-netz.de/downloads/GfiAgent-Setup.exe;GfiAgent-Setup.exe;/silent
-Greenshot;1.2.10.6;https://doku.fa-netz.de/downloads/Greenshot-Setup.exe;Greenshot-Setup.exe;/VERYSILENT /SUPPRESSMESSAGEBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NORESTART
-Irfan View;4.58;https://doku.fa-netz.de/downloads/iviewsetup.exe;iviewsetup.exe;/silent /group=1 /assoc=1 /ini=$env:APPDATA\IrfanView
-KeePass;2.49;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
-Libre Office;7.2.2;https://doku.fa-netz.de/downloads/LibreOffice_Win_x64.msi;LibreOffice_Win_x64.msi;/passive REGISTER_ALL_MSO_TYPES=1
-Nextcloud Client;3.3.6;https://doku.fa-netz.de/downloads/Nextcloud-setup.msi;Nextcloud-setup.msi;/quiet REMOVE=DesktopShortcut
-Thunderbird;91.3.2;https://doku.fa-netz.de/downloads/ThunderbirdSetup.msi;ThunderbirdSetup.msi;/passive
-VLC Media Player;3.0.16;https://doku.fa-netz.de/downloads/vlc-win64.exe;vlc-win64.exe;/S /L=1031
+Adobe Reader;latest;https://doku.fa-netz.de/downloads/AcroRdrDC_de_DE.exe;AcroRdrDC_de_DE.exe;/sPB
+CallAssist;latest;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;PBX_Call_Assist.msi;/passive
+ESET ERA;latest;https://doku.fa-netz.de/downloads/PROTECT_Installer_x64.exe;PROTECT_Installer_x64.exe;--silent
+GFI Agent;latest;https://doku.fa-netz.de/downloads/GfiAgent-Setup.exe;GfiAgent-Setup.exe;/silent
+Greenshot;latest;https://doku.fa-netz.de/downloads/Greenshot-Setup.exe;Greenshot-Setup.exe;/VERYSILENT /SUPPRESSMESSAGEBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NORESTART
+Irfan View;latest;https://doku.fa-netz.de/downloads/iviewsetup.exe;iviewsetup.exe;/silent /group=1 /assoc=1 /ini=$env:APPDATA\IrfanView
+KeePass;latest;https://doku.fa-netz.de/downloads/KeePass-Setup.exe;KeePass-Setup.exe;/VERYSILENT
+Libre Office;latest;https://doku.fa-netz.de/downloads/LibreOffice_Win_x64.msi;LibreOffice_Win_x64.msi;/passive REGISTER_ALL_MSO_TYPES=1
+Nextcloud Client;latest;https://doku.fa-netz.de/downloads/Nextcloud-setup.msi;Nextcloud-setup.msi;/quiet REMOVE=DesktopShortcut
+Thunderbird;latest;https://doku.fa-netz.de/downloads/ThunderbirdSetup.msi;ThunderbirdSetup.msi;/passive
+VLC Media Player;latest;https://doku.fa-netz.de/downloads/vlc-win64.exe;vlc-win64.exe;/S /L=1031
