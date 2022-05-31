@@ -51,7 +51,6 @@
     $inst_isarland = @(
         'ESET ERA'
         'ESET Endpoint'
-        'CRM Connect'
         'GFI Agent'
         'Nextcloud Client'
         'Launchy'
