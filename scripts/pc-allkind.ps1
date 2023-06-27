@@ -19,6 +19,7 @@
 $filestodelete = @(
     "$env:PUBLIC\Desktop\Microsoft Edge.lnk"
 	"$env:PUBLIC\Desktop\VLC media player.lnk"
+    "$env:PUBLIC\Desktop\Acrobat Reader.lnk"
     )
 
 # ---------------- Hier werden alle Funktionen definiert ----------------
@@ -55,7 +56,7 @@ $filestodelete = @(
 Write-Host "INFO: Beginne mit allgemeinen Konfigurationen" -F Yellow
 $global:steps = $global:steps + 1
 
-# Drucker löschen
+# Drucker löschen (wäre bei Windows 11 gar nicht nötig)
 
     $printer = "Microsoft XPS Document Writer"
     remove-unwantedprinter $printer

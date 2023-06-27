@@ -127,9 +127,11 @@
                $global:kindof = "ascair"; break}
             2 {Write-Host "OK: Biomichl" -F Green
                $global:kindof = "biomichl"; break}
-            3 {Write-Host "OK: Isarland" -F Green
+            3 {Write-Host "OK: Friedel-Eder-Schule" -F Green
+               $global:kindof = "fes"; break}
+            4 {Write-Host "OK: Isarland" -F Green
                $global:kindof = "isarland"; break}
-            4 {Write-Host "OK: Raab" -F Green
+            5 {Write-Host "OK: Raab" -F Green
                $global:kindof = "raab"; break}
             9 {Write-Host "OK: Privat-PC" -F Green
                $global:kindof = "privat"; break}
@@ -172,8 +174,9 @@ $global:steps = 0
 
             1     Ascair
             2     Biomichl
-            3     Isarland
-            4     Raab
+            3     Friedel-Eder-Schule
+            4     Isarland
+            5     Raab
 
             9     Privat-PC
 
@@ -211,6 +214,7 @@ $install_apps = $doit
     switch -Wildcard($global:kindof) {
         ascair {& $Global:scriptpath/pc-ascair.ps1; break}
         biomichl {& $Global:scriptpath/pc-biomichl.ps1; break}
+        fes {& $Global:scriptpath/pc-fes.ps1; break}
         isarland {& $Global:scriptpath/pc-isarland.ps1; break}
         raab {& $Global:scriptpath/pc-raab.ps1; break}
         privat {& $Global:scriptpath/pc-private.ps1; break}

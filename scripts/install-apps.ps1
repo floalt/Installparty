@@ -24,10 +24,10 @@
     # Software indiviuell
 
     $inst_private = @(
-        'Adobe Reader'
-        'ESET Internet Security'
+#        'Adobe Reader'
+#        'ESET Internet Security'
         'Libre Office'
-        'Thunderbird'
+#        'Thunderbird'
     )
 
     $inst_ascair = @(
@@ -46,6 +46,15 @@
         'GFI Agent'
         'Teamviewer Host'
         'CallAssist'
+    )
+
+    $inst_fes = @(
+        'Adobe Reader'
+        'ESET ERA'
+        'ESET Endpoint'
+        'GFI Agent'
+        'Teamviewer Host'
+        'Nextcloud Client'
     )
 
     $inst_isarland = @(
@@ -193,6 +202,7 @@ $mytemp = (Get-Item $env:TEMP).fullname
     switch -Wildcard($global:kindof) {
         ascair {$inst_list = $inst_ascair; break}
         biomichl {$inst_list = $inst_biomichl; break}
+        fes {$inst_list = $inst_fes; break}
         isarland {$inst_list = $inst_isarland; break}
         raab {$inst_list = $inst_raab; break}
         privat {$inst_list = $inst_private; break}

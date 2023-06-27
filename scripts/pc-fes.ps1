@@ -1,17 +1,17 @@
 ﻿<#
 
-	Konfigurationen für Biomichl OHG
+	Konfigurationen für Friedel-Eder-Schule
 	Aufruf durch start-party4pc.cmd
     version: 0.62
 
 #>
 
 
-Write-Host "INFO: Beginne mit Konfigurationen für Biomichl OHG" -F Yellow
+Write-Host "INFO: Beginne mit Konfigurationen für Friedel-Eder-Schule" -F Yellow
 $global:steps = $global:steps + 1
 
-$workgroup = "biomichl"
-$tv_config = "teamviewer_biomichl.tvopt"
+$workgroup = "fes"
+$tv_config = "teamviewer_fes.tvopt"
 
 $filestodelete = @(
     "$env:PUBLIC\Desktop\TeamViewer Host"
@@ -56,4 +56,4 @@ $filestodelete = @(
 
 # E N D E
 
-Write-Host "FERTIG: Konfigurationen für Biomichl OHG erledigt" -F Green
+Write-Host "FERTIG: Konfigurationen für Friedel-Eder-Schule erledigt" -F Green
