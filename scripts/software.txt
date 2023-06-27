@@ -5,10 +5,10 @@ Google Chrome;latest;http://dl.google.com/chrome/install/375.126/chrome_installe
 Mozilla Firefox;latest-build;https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=de;firefoxsetup.msi;/passive
 Teamviewer 11;latest;https://download.teamviewer.com/download/version_11x/TeamViewer_Setup.exe;TeamViewer_Setup.exe;/S
 Teamviewer 11 Host;latest;https://download.teamviewer.com/download/version_11x/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
-Teamviewer Host;latest;https://customdesign.teamviewer.com/download/version_15x/69ktmfu_windows/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
+Teamviewer Host;latest;https://customdesignservice.teamviewer.com/download/windows/v15/69ktmfu/TeamViewer_Host_Setup.exe;TeamViewer_Host_Setup.exe;/S
 Launchy;static-2.5;https://www.launchy.net/downloads/win/Launchy2.5.exe;Launchy2.5.exe;/verysilent
 PDF XChange Editor;static;https://doku.fa-netz.de/downloads/PDFX5.exe;PDFX5.exe;/VERYSILENT /NORESTART
-7-Zip;19.00;https://doku.fa-netz.de/downloads/7z-x64.exe;7z-x64.exe;/S
+7-Zip;latest;https://doku.fa-netz.de/downloads/7z-x64.exe;7z-x64.exe;/S
 Adobe Reader;latest;https://doku.fa-netz.de/downloads/AcroRdrDC_de_DE.exe;AcroRdrDC_de_DE.exe;/sPB
 CallAssist;latest;https://doku.fa-netz.de/downloads/PBX_Call_Assist.msi;PBX_Call_Assist.msi;/passive
 ESET ERA;latest;https://doku.fa-netz.de/downloads/PROTECT_Installer_x64.exe;PROTECT_Installer_x64.exe;--silent
