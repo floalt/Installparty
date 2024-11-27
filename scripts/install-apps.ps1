@@ -27,7 +27,7 @@
 #        'Adobe Reader'
 #        'ESET Internet Security'
         'Libre Office'
-#        'Thunderbird'
+        'Thunderbird'
     )
 
     $inst_ascair = @(
@@ -35,7 +35,7 @@
         'ESET Endpoint'
         'GFI Agent'
         'Teamviewer Host'
-        'CallAssist'
+#       'CallAssist'
         'Greenshot'
     )
 
@@ -45,11 +45,11 @@
         'ESET Endpoint'
         'GFI Agent'
         'Teamviewer Host'
-        'CallAssist'
+#       'CallAssist'
     )
 
     $inst_fes = @(
-        'Adobe Reader'
+#       'Adobe Reader'
         'ESET ERA'
         'ESET Endpoint'
         'GFI Agent'
@@ -62,8 +62,8 @@
         'ESET Endpoint'
         'GFI Agent'
         'Nextcloud Client'
-        'Launchy'
-#        'Teamviewer 11'
+#       'Launchy'
+#       'Teamviewer 11'
         'Teamviewer 11 Host'
     )
 
@@ -71,9 +71,9 @@
         'ESET ERA'
         'ESET Endpoint'
         'GFI Agent'
-        'PDF XChange Editor'
+#       'PDF XChange Editor'
         'Teamviewer Host'
-        'CallAssist'
+#       'CallAssist'
         'Nextcloud Client'
     )
 
