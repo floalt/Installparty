@@ -24,7 +24,6 @@
     # Software indiviuell
 
     $inst_private = @(
-#        'Adobe Reader'
 #        'ESET Internet Security'
         'Libre Office'
         'Thunderbird'
@@ -46,10 +45,11 @@
         'GFI Agent'
         'Teamviewer Host'
 #       'CallAssist'
+        'Nextcloud Client'
+        'Libre Office'
     )
 
     $inst_fes = @(
-#       'Adobe Reader'
         'ESET ERA'
         'ESET Endpoint'
         'GFI Agent'
@@ -62,9 +62,9 @@
         'ESET Endpoint'
         'GFI Agent'
         'Nextcloud Client'
-#       'Launchy'
 #       'Teamviewer 11'
         'Teamviewer 11 Host'
+        'Nextcloud Client'
     )
 
     $inst_raab = @(
@@ -73,8 +73,8 @@
         'GFI Agent'
 #       'PDF XChange Editor'
         'Teamviewer Host'
-#       'CallAssist'
         'Nextcloud Client'
+        'Libre Office'
     )
 
 
